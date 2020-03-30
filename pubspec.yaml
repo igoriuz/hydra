@@ -1,0 +1,23 @@
+name: hydra
+description: >
+  Hydra is a widget which helps to support (parallel) development for multiple device types
+  with fallback behaviours
+version: 0.0.1
+author:
+  - Igor Kazhdan <igork3010@gmail.com>
+homepage: https://github.com/igoriuz/hydra
+repository: https://github.com/igoriuz/hydra
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic:
+
+# following page: https://dart.dev/tools/pub/pubspec
