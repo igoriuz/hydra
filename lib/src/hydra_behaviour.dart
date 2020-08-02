@@ -1,4 +1,5 @@
 import 'package:hydra/hydra.dart';
+import 'package:hydra/src/breakpoint.dart';
 
 /// Breakpoint to distinguish the width of the device
 const double kSmallBP = 90;
@@ -13,12 +14,12 @@ const double kLargeBP = 800;
 /// [HydraBehaviour] defines behaviour for [HydraWidget].
 ///
 /// In order to decide which device type is used, [HydraBehaviour] exposes
-/// [breakpointSmall], [breakpointMedium] and [breakpointLarge].
+/// [HydraBehaviour.breakpointSmall], [HydraBehaviour.breakpointMedium] and [HydraBehaviour.breakpointLarge].
 ///
-/// [isOrientationAware] defines what should happen when the device is rotated.
+/// [HydraBehaviour.isOrientationAware] defines what should happen when the device is rotated.
 /// If it's not aware, then the shortest side is used.
 ///
-/// [isSmallerScreenPreferred] is set to `false` by default, assuming that
+/// [HydraBehaviour.isSmallerScreenPreferred] is set to `false` by default, assuming that
 /// bigger screens are preferred, if there is no screen at current breakpoint.
 ///
 /// ```dart

@@ -47,14 +47,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return HydraWidget(
       behaviour: HydraBehaviour(
-        breakpointSmall: kSmallBP, // mini -> small breakpoint
-        breakpointMedium: kMediumBP, // small -> medium breakpoint
-        breakpointLarge: kLargeBP, // medium -> large breakpoint
+        breakpointSmall: kSmallBP,
+        // mini -> small breakpoint
+        breakpointMedium: kMediumBP,
+        // small -> medium breakpoint
+        breakpointLarge: kLargeBP,
+        // medium -> large breakpoint
         // this prevents changing layouts when device is rotated on e.g. mobile devices
         isOrientationAware: false,
         // prefer smaller screens. by default its `false`
         isSmallerScreenPreferred: true,
       ),
+      // !! warning: private methods within build methods are not recommended! this is just for demo purposes !!
       small: _buildForMobile(),
       medium: _buildForTablet(),
     );
@@ -133,8 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Widget> _buildChildren() {
     return <Widget>[
-      Text(
-        'You have pushed the button this many times:',
+      Container(
+        color: Colors.orange,
+        child: Text(
+          'You have pushed the button this many times:',
+        ),
       ),
       Builder(
         builder: (context) => Text(

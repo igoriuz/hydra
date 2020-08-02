@@ -9,8 +9,7 @@ import 'hydra_no_widget_exception.dart';
 ///
 /// [behaviour] can be controlled by creating a [HydraBehaviour] object.
 ///
-/// Four screen alternatives [mini], [small], [medium] and [large] are currently
-/// supported.
+/// Four screen alternatives are currently supported.
 class HydraWidget extends StatelessWidget {
   /// {@macro hydrabehaviour}
   final HydraBehaviour behaviour;

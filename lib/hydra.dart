@@ -1,3 +1,4 @@
+/// Flutter widget which helps building responsive widgets
 library hydra;
 
 export 'package:hydra/src/hydra_behaviour.dart';

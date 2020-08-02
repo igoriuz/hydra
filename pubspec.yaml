@@ -1,11 +1,8 @@
 name: hydra
-description: >
-  Hydra is a widget which helps to support (parallel) development for multiple device types
-  with fallback behaviours
-version: 0.0.1
-author:
-  - Igor Kazhdan <igork3010@gmail.com>
+description: Flutter widget which helps building responsive widgets.
+version: 0.1.0
 homepage: https://github.com/igoriuz/hydra
+issue_tracker: https://github.com/igoriuz/hydra/issues
 repository: https://github.com/igoriuz/hydra
 
 environment:
