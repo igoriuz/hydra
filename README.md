@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/igoriuz/hydra/master/.github/logo.png" height="120" alt="Hydra Logo" />
+<img src="https://raw.githubusercontent.com/igoriuz/hydra/main/.github/logo.png" height="120" alt="Hydra Logo" />
 
 # Hydra
 Build responsive widgets with ease. Define up to four different looks for the same widget. Every hydra can have different breakpoints which determines when an alternative should appear.
