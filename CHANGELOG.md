@@ -1,3 +1,10 @@
+# 1.1.0
+
+* **Breaking:** Default breakpoints changed from 90/400/800 to 600/900/1200
+* Added `HydraBehaviour.material()` preset with Material Design breakpoints (600/840/1200)
+* Exported `Breakpoint` enum as public API
+* Rewrote README with installation guide, code examples, and badges
+
 # 1.0.0
 
 * **Breaking:** Removed unused `HydraNeck` class
