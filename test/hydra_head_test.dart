@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydra/hydra.dart';
-import 'package:hydra/src/breakpoint.dart';
 
 void main() {
   group('HydraHead factories', () {
