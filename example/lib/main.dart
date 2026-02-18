@@ -8,15 +8,14 @@ void main() async {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
     DeviceOrientation.portraitDown,
-    DeviceOrientation.portraitUp
+    DeviceOrientation.portraitUp,
   ]);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-// This example is just to show how you can use Hydra.
-// Splitting widgets into methods is a antipattern. Instead create a new class
-// for widgets.
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,14 +23,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -46,19 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return HydraWidget(
-      behaviour: HydraBehaviour(
+      behaviour: const HydraBehaviour(
         breakpointSmall: kSmallBP,
-        // mini -> small breakpoint
         breakpointMedium: kMediumBP,
-        // small -> medium breakpoint
         breakpointLarge: kLargeBP,
-        // medium -> large breakpoint
-        // this prevents changing layouts when device is rotated on e.g. mobile devices
         isOrientationAware: false,
-        // prefer smaller screens. by default its `false`
         isSmallerScreenPreferred: true,
       ),
-      // !! warning: private methods within build methods are not recommended! this is just for demo purposes !!
       small: _buildForMobile(),
       medium: _buildForTablet(),
     );
@@ -67,86 +62,86 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildList() {
     return ListView.builder(
       itemCount: _counter + 1,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) => Card(
+        color: index % 2 == 0 ? Colors.green : Colors.greenAccent,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Item $index"),
+          child: Text('Item $index'),
         ),
-        color: index % 2 == 0 ? Colors.green : Colors.greenAccent,
       ),
     );
   }
 
   Widget _buildScaffold(String title, Widget content) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: content,
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
 
   Widget _buildForTablet() {
     return _buildScaffold(
-        " Rotated Mobile / Tablet Demo",
-        Builder(
-          builder: (context) => Padding(
-            padding: const EdgeInsets.all(28.0 * 1.5),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  left: MediaQuery.of(context).size.width * .45,
-                  top: 0,
-                  bottom: 0,
-                  right: 64,
-                  child: SingleChildScrollView(child: _buildList()),
+      'Rotated Mobile / Tablet Demo',
+      Builder(
+        builder: (context) => Padding(
+          padding: const EdgeInsets.all(42.0),
+          child: Stack(
+            children: [
+              Positioned(
+                left: MediaQuery.of(context).size.width * .45,
+                top: 0,
+                bottom: 0,
+                right: 64,
+                child: SingleChildScrollView(child: _buildList()),
+              ),
+              Positioned.fill(
+                right: MediaQuery.of(context).size.width * .55,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _buildChildren(),
                 ),
-                Positioned.fill(
-                  right: MediaQuery.of(context).size.width * .55,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: _buildChildren(),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildForMobile() {
     return _buildScaffold(
-        "Mobile Demo",
-        Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: _buildChildren()
-                ..add(_buildList()), //),  ..add(_buildList()
-            ),
+      'Mobile Demo',
+      Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ..._buildChildren(),
+              _buildList(),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildChildren() {
-    return <Widget>[
+    return [
       Container(
         color: Colors.orange,
-        child: Text(
-          'You have pushed the button this many times:',
-        ),
+        child: const Text('You have pushed the button this many times:'),
       ),
       Builder(
         builder: (context) => Text(
           '$_counter',
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
     ];
