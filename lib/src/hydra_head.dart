@@ -2,53 +2,44 @@ import 'package:flutter/material.dart';
 
 import 'breakpoint.dart';
 
-/// {@template hydrahead}
-/// [HydraHead] exposes [breakpoint] to define for which kind of device type
-/// it is used to build a widget by its [widget].
+/// {@template hydra_head}
+/// [HydraHead] pairs a [widget] with a [breakpoint] to define which device
+/// type the widget is intended for.
 /// {@endtemplate}
 class HydraHead {
-  /// build method for the widget which should be built.
+  /// The widget to display for this breakpoint.
   final Widget widget;
 
-  /// Describes for which kind of device type it should be used.
+  /// The device type breakpoint this head targets.
   final Breakpoint breakpoint;
 
-  /// Not exposed for public. Only accessible by the following factories:
-  ///
-  /// ```dart
-  ///  HydraHead.mini(WIDGET_FUNCTION);
-  /// ```
-  ///
-  /// ```dart
-  ///  HydraHead.small(WIDGET_FUNCTION);
-  /// ```
-  ///
-  /// ```dart
-  ///  HydraHead.medium(WIDGET_FUNCTION);
-  /// ```
-  ///
-  /// ```dart
-  ///  HydraHead.large(WIDGET_FUNCTION);
-  /// ```
-  HydraHead._(this.widget, this.breakpoint);
+  const HydraHead._(this.widget, this.breakpoint);
 
-  /// [HydraHead] exposes [widgetBehaviour] for defining the build method.
-  /// Uses private constructor with [Breakpoint.mini].
-  factory HydraHead.mini(Widget widgetBehaviour) =>
-      HydraHead._(widgetBehaviour, Breakpoint.mini);
+  /// Creates a [HydraHead] targeting [Breakpoint.mini].
+  const factory HydraHead.mini(Widget widget) = _MiniHead;
 
-  /// [HydraHead] exposes [widgetBehaviour] for defining the build method.
-  /// Uses private constructor with [Breakpoint.small].
-  factory HydraHead.small(Widget widgetBehaviour) =>
-      HydraHead._(widgetBehaviour, Breakpoint.small);
+  /// Creates a [HydraHead] targeting [Breakpoint.small].
+  const factory HydraHead.small(Widget widget) = _SmallHead;
 
-  /// [HydraHead] exposes [widgetBehaviour] for defining the build method.
-  /// Uses private constructor with [Breakpoint.medium].
-  factory HydraHead.medium(Widget widgetBehaviour) =>
-      HydraHead._(widgetBehaviour, Breakpoint.medium);
+  /// Creates a [HydraHead] targeting [Breakpoint.medium].
+  const factory HydraHead.medium(Widget widget) = _MediumHead;
 
-  /// [HydraHead] exposes [widgetBehaviour] for defining the build method.
-  /// Uses private constructor with [Breakpoint.large].
-  factory HydraHead.large(Widget widgetBehaviour) =>
-      HydraHead._(widgetBehaviour, Breakpoint.large);
+  /// Creates a [HydraHead] targeting [Breakpoint.large].
+  const factory HydraHead.large(Widget widget) = _LargeHead;
+}
+
+class _MiniHead extends HydraHead {
+  const _MiniHead(Widget widget) : super._(widget, Breakpoint.mini);
+}
+
+class _SmallHead extends HydraHead {
+  const _SmallHead(Widget widget) : super._(widget, Breakpoint.small);
+}
+
+class _MediumHead extends HydraHead {
+  const _MediumHead(Widget widget) : super._(widget, Breakpoint.medium);
+}
+
+class _LargeHead extends HydraHead {
+  const _LargeHead(Widget widget) : super._(widget, Breakpoint.large);
 }
