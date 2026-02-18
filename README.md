@@ -1,25 +1,85 @@
 <img src="https://raw.githubusercontent.com/igoriuz/hydra/main/.github/logo.png" height="120" alt="Hydra Logo" />
 
 # Hydra
-Build responsive widgets with ease. Define up to four different looks for the same widget. Every hydra can have different breakpoints which determines when an alternative should appear.
 
-## Motivation
-Achieving responsiveness can be a tedious task because of multiple factors like orientation, screen width and so on. Without a clear definition it's difficult to scale apps which heavily rely on responsiveness.
+[![pub package](https://img.shields.io/pub/v/hydra.svg)](https://pub.dev/packages/hydra)
+[![CI](https://github.com/igoriuz/hydra/actions/workflows/ci.yml/badge.svg)](https://github.com/igoriuz/hydra/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-### What does Hydra do?
-- Decides which widget it should show depending on your breakpoints
-- Automatically show the next matching widget, if there's no suitable alternative for the current breakpoint
-- Apply your ruleset (=behaviour) about switching widgets
+Build responsive Flutter widgets with ease. Define up to four layout variants and let Hydra pick the right one based on screen size.
 
-### What doesn't Hydra do?
-- Any "magical" scaling in the background (like font sizes)
-- Calculating different sizes/ constraints for your widget
+## Installation
 
-## How to use HydraWidget
-| Parameter | Function                                                        |
-|-----------|-----------------------------------------------------------------|
-| Behaviour | Defining breakpoints for switching between widgets. Awareness of orientation. Preferness when to use either smaller or bigger alternative, when no alternative fits between current breakpoints. |
-| mini      | The smallest widget. Size is relative depending on breakpoints. |
-| small     | Bigger than mini. Size is relative depending on breakpoints.    |
-| medium    | Bigger than small. Size is relative depending on breakpoints.   |
-| large     | Bigger than medium. Size is relative depending on breakpoints.  |
+```bash
+flutter pub add hydra
+```
+
+## Quick Start
+
+```dart
+import 'package:hydra/hydra.dart';
+
+HydraWidget(
+  mini: const Text('Phone'),
+  medium: const Text('Tablet'),
+  large: const Text('Desktop'),
+)
+```
+
+Hydra selects the best match for the current screen width. If no exact match exists, it falls back to the nearest available alternative.
+
+## Breakpoints
+
+Default breakpoints: **600** (small), **900** (medium), **1200** (large). Everything below 600 is considered `mini`.
+
+```dart
+// Use defaults
+HydraWidget(
+  behaviour: const HydraBehaviour(),
+  mini: mobileLayout(),
+  large: desktopLayout(),
+)
+
+// Custom breakpoints
+HydraWidget(
+  behaviour: const HydraBehaviour(
+    breakpointSmall: 480,
+    breakpointMedium: 768,
+    breakpointLarge: 1024,
+  ),
+  small: mobileLayout(),
+  medium: tabletLayout(),
+  large: desktopLayout(),
+)
+
+// Material Design breakpoints (600 / 840 / 1200)
+HydraWidget(
+  behaviour: const HydraBehaviour.material(),
+  mini: compactLayout(),
+  small: mediumLayout(),
+  large: expandedLayout(),
+)
+```
+
+## Behaviour Options
+
+| Constructor | Description |
+|---|---|
+| `HydraBehaviour()` | Default: orientation-aware, prefers larger fallback |
+| `HydraBehaviour.preferSmaller()` | Falls back to smaller alternative instead of larger |
+| `HydraBehaviour.noOrientation()` | Uses shortest side regardless of orientation |
+| `HydraBehaviour.material()` | Material Design breakpoints (600/840/1200) |
+
+### Orientation Awareness
+
+By default, Hydra uses `MediaQuery.of(context).size.width` which changes when the device rotates. Set `isOrientationAware: false` (or use `HydraBehaviour.noOrientation()`) to use the shortest side instead — the layout stays consistent regardless of rotation.
+
+## How It Works
+
+1. **Breakpoint detection** — determines the current breakpoint from screen width
+2. **Exact match** — looks for a widget registered at that breakpoint
+3. **Nearest fallback** — if no exact match, picks the closest available alternative (prefers larger by default, configurable via `isSmallerScreenPreferred`)
+
+## License
+
+MIT
