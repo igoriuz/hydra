@@ -13,13 +13,15 @@ const double kLargeBP = 1200;
 /// [HydraBehaviour] defines behaviour for [HydraWidget].
 ///
 /// In order to decide which device type is used, [HydraBehaviour] exposes
-/// [breakpointSmall], [breakpointMedium] and [breakpointLarge].
+/// [HydraBehaviour.breakpointSmall], [HydraBehaviour.breakpointMedium] and
+/// [HydraBehaviour.breakpointLarge].
 ///
-/// [isOrientationAware] defines what should happen when the device is rotated.
-/// If it's not aware, then the shortest side is used.
+/// [HydraBehaviour.isOrientationAware] defines what should happen when the
+/// device is rotated. If it's not aware, then the shortest side is used.
 ///
-/// [isSmallerScreenPreferred] is set to `false` by default, assuming that
-/// bigger screens are preferred if there is no screen at the current breakpoint.
+/// [HydraBehaviour.isSmallerScreenPreferred] is set to `false` by default,
+/// assuming that bigger screens are preferred if there is no screen at the
+/// current breakpoint.
 ///
 /// ```dart
 /// HydraBehaviour(

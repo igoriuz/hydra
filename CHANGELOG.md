@@ -1,3 +1,9 @@
+# 1.1.2
+
+* Removed `dartdoc_options.yaml` that referenced unnamed library, fixing pub.dev doc generation
+* Fixed dartdoc warnings by qualifying field references in `{@macro}` template
+* Added `build/` and `doc/` to `.pubignore`
+
 # 1.1.1
 
 * Fixed `dartdoc_options.yaml` syntax causing pub.dev documentation generation to fail
