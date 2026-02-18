@@ -1,13 +1,13 @@
 import 'package:hydra/src/breakpoint.dart';
 
 /// Breakpoint to distinguish the width of the device.
-const double kSmallBP = 90;
+const double kSmallBP = 600;
 
 /// Breakpoint to distinguish the width of the device.
-const double kMediumBP = 400;
+const double kMediumBP = 900;
 
 /// Breakpoint to distinguish the width of the device.
-const double kLargeBP = 800;
+const double kLargeBP = 1200;
 
 /// {@template hydra_behaviour}
 /// [HydraBehaviour] defines behaviour for [HydraWidget].
@@ -80,4 +80,19 @@ class HydraBehaviour {
   })  : isOrientationAware = false,
         assert(breakpointSmall < breakpointMedium),
         assert(breakpointMedium < breakpointLarge);
+
+  /// Breakpoints based on Material Design layout guidelines.
+  ///
+  /// - mini: < 600
+  /// - small: 600–839
+  /// - medium: 840–1199
+  /// - large: >= 1200
+  ///
+  /// See: https://m3.material.io/foundations/layout/applying-layout
+  const HydraBehaviour.material({
+    this.isOrientationAware = true,
+    this.isSmallerScreenPreferred = false,
+  })  : breakpointSmall = 600,
+        breakpointMedium = 840,
+        breakpointLarge = 1200;
 }
