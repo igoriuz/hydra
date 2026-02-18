@@ -1,10 +1,11 @@
-import 'package:hydra/hydra.dart';
-
-/// [Exception] when no Widget was given to [HydraWidget].
+/// Exception thrown when no widget was provided to [HydraWidget].
 class HydraNoWidgetException implements Exception {
   /// The error message.
-  String message;
+  final String message;
 
-  /// Default constructor for this error.
-  HydraNoWidgetException(this.message);
+  /// Creates a [HydraNoWidgetException] with the given [message].
+  const HydraNoWidgetException(this.message);
+
+  @override
+  String toString() => 'HydraNoWidgetException: $message';
 }
