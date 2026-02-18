@@ -25,12 +25,12 @@ class HydraWidget extends StatelessWidget {
     Widget? medium,
     Widget? large,
   }) : widgets = _buildWidgetList(
-         mini: mini,
-         small: small,
-         medium: medium,
-         large: large,
-         preferSmaller: behaviour.isSmallerScreenPreferred,
-       );
+          mini: mini,
+          small: small,
+          medium: medium,
+          large: large,
+          preferSmaller: behaviour.isSmallerScreenPreferred,
+        );
 
   static List<HydraHead> _buildWidgetList({
     required Widget? mini,
@@ -86,6 +86,8 @@ class HydraWidget extends StatelessWidget {
     return widgets.reduce((a, b) {
       final distA = (target.index - a.breakpoint.index).abs();
       final distB = (target.index - b.breakpoint.index).abs();
+      // When equidistant, prefer the earlier element in [widgets],
+      // which respects the preferSmaller ordering set in [_buildWidgetList].
       return distA <= distB ? a : b;
     });
   }
