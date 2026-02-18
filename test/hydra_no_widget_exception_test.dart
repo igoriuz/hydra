@@ -2,13 +2,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hydra/hydra.dart';
 
 void main() {
-  group('throw exceptions', () {
-    final throwsHydraNoWidget = throwsA(isA<HydraNoWidgetException>());
+  group('HydraNoWidgetException', () {
+    test('throws when no widgets are given', () {
+      expect(
+        () => HydraWidget(),
+        throwsA(isA<HydraNoWidgetException>()),
+      );
+    });
 
-    test('with no widgets given', () {
-      expect(() {
-        assert(HydraWidget() == null);
-      }, throwsHydraNoWidget);
+    test('has a descriptive toString', () {
+      const exception = HydraNoWidgetException('test message');
+      expect(exception.toString(), 'HydraNoWidgetException: test message');
     });
   });
 }

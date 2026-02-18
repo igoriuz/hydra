@@ -1,12 +1,18 @@
 name: hydra
 description: Flutter widget which helps building responsive widgets.
-version: 0.1.0
+version: 1.0.0
 homepage: https://github.com/igoriuz/hydra
 issue_tracker: https://github.com/igoriuz/hydra/issues
 repository: https://github.com/igoriuz/hydra
+topics:
+  - responsive
+  - widget
+  - breakpoint
+  - layout
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: '>=3.24.0'
 
 dependencies:
   flutter:
@@ -15,6 +21,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic:
-
-# following page: https://dart.dev/tools/pub/pubspec
+  flutter_lints: ^6.0.0

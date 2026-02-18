@@ -4,69 +4,39 @@ import 'package:hydra/hydra.dart';
 import 'package:hydra/src/breakpoint.dart';
 
 void main() {
-  group('hydraHead factories', () {
-    HydraHead mini, small, medium, large;
+  group('HydraHead factories', () {
+    final mini = HydraHead.mini(Container());
+    final small = HydraHead.small(Container());
+    final medium = HydraHead.medium(Container());
+    final large = HydraHead.large(Container());
 
-    setUpAll(() {
-      mini = HydraHead.mini(Container());
-      small = HydraHead.small(Container());
-      medium = HydraHead.medium(Container());
-      large = HydraHead.large(Container());
-    });
-
-    group('with breakpoints', () {
-      test('mini hydraHead has mini breakpoint', () {
-        assert(mini.breakpoint.index == 0);
-        expect(mini.breakpoint, isA<Breakpoint>());
+    group('breakpoint assignment', () {
+      test('mini has Breakpoint.mini', () {
         expect(mini.breakpoint, Breakpoint.mini);
-        expect(mini.breakpoint.index, Breakpoint.mini.index);
+        expect(mini.breakpoint.index, 0);
       });
 
-      test('small hydraHead has small breakpoint', () {
-        assert(small.breakpoint.index == 1);
-        expect(small.breakpoint, isA<Breakpoint>());
+      test('small has Breakpoint.small', () {
         expect(small.breakpoint, Breakpoint.small);
-        expect(small.breakpoint.index, Breakpoint.small.index);
+        expect(small.breakpoint.index, 1);
       });
 
-      test('medium hydraHead has medium breakpoint', () {
-        assert(medium.breakpoint.index == 2);
-        expect(medium.breakpoint, isA<Breakpoint>());
+      test('medium has Breakpoint.medium', () {
         expect(medium.breakpoint, Breakpoint.medium);
-        expect(medium.breakpoint.index, Breakpoint.medium.index);
+        expect(medium.breakpoint.index, 2);
       });
 
-      test('large hydraHead has large breakpoint', () {
-        assert(large.breakpoint.index == 3);
-        expect(large.breakpoint, isA<Breakpoint>());
+      test('large has Breakpoint.large', () {
         expect(large.breakpoint, Breakpoint.large);
-        expect(large.breakpoint.index, Breakpoint.large.index);
+        expect(large.breakpoint.index, 3);
       });
     });
 
-    group('ordinal comparison between breakpoints of factories', () {
-      test('mini is smaller than small', () {
-        assert(mini.breakpoint.index < small.breakpoint.index);
-      });
-
-      test('mini is smaller than medium', () {
-        assert(mini.breakpoint.index < medium.breakpoint.index);
-      });
-
-      test('mini is smaller than large', () {
-        assert(mini.breakpoint.index < large.breakpoint.index);
-      });
-
-      test('small is smaller than medium', () {
-        assert(small.breakpoint.index < medium.breakpoint.index);
-      });
-
-      test('small is smaller than large', () {
-        assert(small.breakpoint.index < large.breakpoint.index);
-      });
-
-      test('medium is smaller than large', () {
-        assert(medium.breakpoint.index < large.breakpoint.index);
+    group('ordinal comparison', () {
+      test('mini < small < medium < large', () {
+        expect(mini.breakpoint.index, lessThan(small.breakpoint.index));
+        expect(small.breakpoint.index, lessThan(medium.breakpoint.index));
+        expect(medium.breakpoint.index, lessThan(large.breakpoint.index));
       });
     });
   });
