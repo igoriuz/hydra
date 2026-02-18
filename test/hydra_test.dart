@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydra/hydra.dart';
-import 'package:hydra/src/breakpoint.dart';
 
 void main() {
   group('HydraWidget', () {
@@ -223,6 +222,26 @@ void main() {
         );
 
         expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.medium);
+      });
+    });
+
+    group('material preset', () {
+      test('uses Material Design breakpoints', () {
+        final hydra = HydraWidget(
+          mini: mini,
+          small: small,
+          medium: medium,
+          large: large,
+          behaviour: const HydraBehaviour.material(),
+        );
+
+        expect(hydra.nearestWidget(0).breakpoint, Breakpoint.mini);
+        expect(hydra.nearestWidget(599).breakpoint, Breakpoint.mini);
+        expect(hydra.nearestWidget(600).breakpoint, Breakpoint.small);
+        expect(hydra.nearestWidget(839).breakpoint, Breakpoint.small);
+        expect(hydra.nearestWidget(840).breakpoint, Breakpoint.medium);
+        expect(hydra.nearestWidget(1199).breakpoint, Breakpoint.medium);
+        expect(hydra.nearestWidget(1200).breakpoint, Breakpoint.large);
       });
     });
   });
