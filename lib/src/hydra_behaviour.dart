@@ -1,49 +1,55 @@
-import 'package:hydra/hydra.dart';
 import 'package:hydra/src/breakpoint.dart';
 
-/// Breakpoint to distinguish the width of the device
+/// Breakpoint to distinguish the width of the device.
 const double kSmallBP = 90;
 
-/// Breakpoint to distinguish the width of the device
+/// Breakpoint to distinguish the width of the device.
 const double kMediumBP = 400;
 
-/// Breakpoint to distinguish the width of the device
+/// Breakpoint to distinguish the width of the device.
 const double kLargeBP = 800;
 
-/// {@template hydrabehaviour}
+/// {@template hydra_behaviour}
 /// [HydraBehaviour] defines behaviour for [HydraWidget].
 ///
 /// In order to decide which device type is used, [HydraBehaviour] exposes
-/// [HydraBehaviour.breakpointSmall], [HydraBehaviour.breakpointMedium] and [HydraBehaviour.breakpointLarge].
+/// [breakpointSmall], [breakpointMedium] and [breakpointLarge].
 ///
-/// [HydraBehaviour.isOrientationAware] defines what should happen when the device is rotated.
+/// [isOrientationAware] defines what should happen when the device is rotated.
 /// If it's not aware, then the shortest side is used.
 ///
-/// [HydraBehaviour.isSmallerScreenPreferred] is set to `false` by default, assuming that
-/// bigger screens are preferred, if there is no screen at current breakpoint.
+/// [isSmallerScreenPreferred] is set to `false` by default, assuming that
+/// bigger screens are preferred if there is no screen at the current breakpoint.
 ///
 /// ```dart
 /// HydraBehaviour(
-///   breakpointSmall: kSmallBP, // mini -> small breakpoint
-///   breakpointLarge: kMediumBP, // small -> medium breakpoint
-///   breakpointMedium: kLargeBP, // medium -> large breakpoint
-///   isOrientationAware: false, // shortest side when device is rotated
-///   isSmallerScreenPreferred: true, // prefer smaller screens.
+///   breakpointSmall: kSmallBP,
+///   breakpointMedium: kMediumBP,
+///   breakpointLarge: kLargeBP,
+///   isOrientationAware: false,
+///   isSmallerScreenPreferred: true,
 /// )
 /// ```
 ///
 /// Default breakpoints are defined in [kSmallBP], [kMediumBP] and [kLargeBP].
 /// {@endtemplate}
 class HydraBehaviour {
+  /// Breakpoint threshold between [Breakpoint.mini] and [Breakpoint.small].
   final double breakpointSmall;
+
+  /// Breakpoint threshold between [Breakpoint.small] and [Breakpoint.medium].
   final double breakpointMedium;
+
+  /// Breakpoint threshold between [Breakpoint.medium] and [Breakpoint.large].
   final double breakpointLarge;
+
+  /// Whether the widget should re-evaluate when device orientation changes.
   final bool isOrientationAware;
+
+  /// Whether to prefer smaller screen alternatives when no exact match exists.
   final bool isSmallerScreenPreferred;
 
-  /// Default behaviour of [HydraWidget] with [Breakpoint]s derived from
-  /// [kSmallBP], [kMediumBP] and [kLargeBP]. Re-evaluates when the devices is
-  /// rotated. Also bigger screens are preferred.
+  /// {@macro hydra_behaviour}
   const HydraBehaviour({
     this.breakpointSmall = kSmallBP,
     this.breakpointMedium = kMediumBP,
@@ -51,18 +57,35 @@ class HydraBehaviour {
     this.isOrientationAware = true,
     this.isSmallerScreenPreferred = false,
   })  : assert(breakpointSmall < breakpointMedium),
-        assert(breakpointMedium < breakpointLarge),
-        assert(isOrientationAware != null),
-        assert(isSmallerScreenPreferred != null);
+        assert(breakpointMedium < breakpointLarge);
 
   /// Default behaviour except that [isSmallerScreenPreferred] is set to `true`.
-  /// This means, that [HydraWidget] chooses smaller screens.
-  factory HydraBehaviour.preferSmaller() =>
-      HydraBehaviour(isSmallerScreenPreferred: true);
+  const HydraBehaviour.preferSmaller({
+    double breakpointSmall = kSmallBP,
+    double breakpointMedium = kMediumBP,
+    double breakpointLarge = kLargeBP,
+    bool isOrientationAware = true,
+  })  : breakpointSmall = breakpointSmall,
+        breakpointMedium = breakpointMedium,
+        breakpointLarge = breakpointLarge,
+        isOrientationAware = isOrientationAware,
+        isSmallerScreenPreferred = true,
+        assert(breakpointSmall < breakpointMedium),
+        assert(breakpointMedium < breakpointLarge);
 
-  /// Default behaviour except that the shortest side will be used. This means,
+  /// Default behaviour except that the shortest side will be used. This means
   /// that even when the device is rotated, [HydraWidget] won't choose a
   /// different screen alternative.
-  factory HydraBehaviour.noOrientation() =>
-      HydraBehaviour(isOrientationAware: false);
+  const HydraBehaviour.noOrientation({
+    double breakpointSmall = kSmallBP,
+    double breakpointMedium = kMediumBP,
+    double breakpointLarge = kLargeBP,
+    bool isSmallerScreenPreferred = false,
+  })  : breakpointSmall = breakpointSmall,
+        breakpointMedium = breakpointMedium,
+        breakpointLarge = breakpointLarge,
+        isOrientationAware = false,
+        isSmallerScreenPreferred = isSmallerScreenPreferred,
+        assert(breakpointSmall < breakpointMedium),
+        assert(breakpointMedium < breakpointLarge);
 }
