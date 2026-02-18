@@ -1,3 +1,7 @@
+# 1.1.1
+
+* Fixed `dartdoc_options.yaml` syntax causing pub.dev documentation generation to fail
+
 # 1.1.0
 
 * **Breaking:** Default breakpoints changed from 90/400/800 to 600/900/1200
