@@ -7,7 +7,9 @@
 [![codecov](https://codecov.io/gh/igoriuz/hydra/branch/main/graph/badge.svg)](https://codecov.io/gh/igoriuz/hydra)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Build responsive Flutter widgets with ease. Define up to four layout variants and let Hydra pick the right one based on screen size.
+Responsive layouts are like the Hydra of Greek mythology — cut off one screen size and two more appear. Phone, tablet, foldable, desktop, ultrawide... every time you think you've handled them all, a new head grows.
+
+Hydra tames the beast. Define up to four layout variants and let it pick the right one — with zero additional dependencies beyond Flutter itself.
 
 ## Installation
 
@@ -80,6 +82,13 @@ By default, Hydra uses `MediaQuery.of(context).size.width` which changes when th
 1. **Breakpoint detection** — determines the current breakpoint from screen width
 2. **Exact match** — looks for a widget registered at that breakpoint
 3. **Nearest fallback** — if no exact match, picks the closest available alternative (prefers larger by default, configurable via `isSmallerScreenPreferred`)
+
+## Why Hydra?
+
+- **Zero dependencies** — only Flutter SDK, nothing else
+- **Tiny footprint** — a handful of classes, no bloat
+- **Smart fallbacks** — you don't need a widget for every breakpoint
+- **100% test coverage** — every line, every head
 
 ## License
 

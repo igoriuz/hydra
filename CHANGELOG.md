@@ -1,3 +1,9 @@
+# 1.1.3
+
+* Added Codecov integration for test coverage reporting
+* Achieved 100% test coverage with widget build test
+* Improved README with Hydra mythology intro and "Why Hydra?" section
+
 # 1.1.2
 
 * Removed `dartdoc_options.yaml` that referenced unnamed library, fixing pub.dev doc generation

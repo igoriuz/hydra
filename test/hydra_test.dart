@@ -225,6 +225,26 @@ void main() {
       });
     });
 
+    group('build', () {
+      testWidgets('renders the correct widget via MediaQuery', (tester) async {
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(size: Size(1400, 900)),
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: HydraWidget(
+                mini: const Text('mini'),
+                large: const Text('large'),
+              ),
+            ),
+          ),
+        );
+
+        expect(find.text('large'), findsOneWidget);
+        expect(find.text('mini'), findsNothing);
+      });
+    });
+
     group('material preset', () {
       test('uses Material Design breakpoints', () {
         final hydra = HydraWidget(
