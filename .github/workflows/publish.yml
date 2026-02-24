@@ -38,6 +38,8 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" \
             --title "$GITHUB_REF_NAME" \
-            --notes "${{ steps.changelog.outputs.body }}"
+            --notes-file - <<'EOF'
+          ${{ steps.changelog.outputs.body }}
+          EOF
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
