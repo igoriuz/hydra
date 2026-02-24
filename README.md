@@ -4,6 +4,7 @@
 
 [![pub package](https://img.shields.io/pub/v/hydra.svg)](https://pub.dev/packages/hydra)
 [![CI](https://github.com/igoriuz/hydra/actions/workflows/ci.yml/badge.svg)](https://github.com/igoriuz/hydra/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/igoriuz/hydra/branch/main/graph/badge.svg)](https://codecov.io/gh/igoriuz/hydra)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Build responsive Flutter widgets with ease. Define up to four layout variants and let Hydra pick the right one based on screen size.
