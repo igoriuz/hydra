@@ -1,3 +1,9 @@
+# 1.1.4
+
+* Use `MediaQuery.sizeOf` instead of `MediaQuery.of` to reduce unnecessary rebuilds
+* Migrated from `flutter_lints` to `very_good_analysis` for stricter linting
+* Added `HydraBehaviour` unit tests for full Codecov coverage
+
 # 1.1.3
 
 * Added Codecov integration for test coverage reporting
