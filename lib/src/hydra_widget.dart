@@ -55,7 +55,7 @@ class HydraWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = comparableWidth(MediaQuery.of(context).size);
+    final width = comparableWidth(MediaQuery.sizeOf(context));
     return nearestWidget(width).widget;
   }
 
