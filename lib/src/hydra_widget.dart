@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-
-import 'breakpoint.dart';
-import 'hydra_behaviour.dart';
-import 'hydra_head.dart';
-import 'hydra_no_widget_exception.dart';
+import 'package:hydra/src/breakpoint.dart';
+import 'package:hydra/src/hydra_behaviour.dart';
+import 'package:hydra/src/hydra_head.dart';
+import 'package:hydra/src/hydra_no_widget_exception.dart';
 
 /// [HydraWidget] is a [StatelessWidget] that selects which widget to display
 /// based on the current screen size and [behaviour] configuration.
 ///
-/// Up to four screen alternatives are supported: [mini], [small], [medium],
-/// and [large]. At least one must be provided.
+/// Up to four screen alternatives are supported: `mini`, `small`, `medium`,
+/// and `large`. At least one must be provided.
 class HydraWidget extends StatelessWidget {
-  /// {@macro hydra_behaviour}
-  final HydraBehaviour behaviour;
-
-  /// The resolved list of widget alternatives, ordered by preference.
-  final List<HydraHead> widgets;
-
+  /// Creates a [HydraWidget] with the given screen alternatives.
+  ///
+  /// At least one of [mini], [small], [medium], or [large] must be provided.
   HydraWidget({
     super.key,
     this.behaviour = const HydraBehaviour(),
@@ -31,6 +27,12 @@ class HydraWidget extends StatelessWidget {
           large: large,
           preferSmaller: behaviour.isSmallerScreenPreferred,
         );
+
+  /// {@macro hydra_behaviour}
+  final HydraBehaviour behaviour;
+
+  /// The resolved list of widget alternatives, ordered by preference.
+  final List<HydraHead> widgets;
 
   static List<HydraHead> _buildWidgetList({
     required Widget? mini,
@@ -47,7 +49,7 @@ class HydraWidget extends StatelessWidget {
     ];
 
     if (heads.isEmpty) {
-      throw HydraNoWidgetException('At least one widget is needed');
+      throw const HydraNoWidgetException('At least one widget is needed');
     }
 
     return preferSmaller ? heads.reversed.toList() : heads;

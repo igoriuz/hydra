@@ -1,10 +1,10 @@
-/// Exception thrown when no widget was provided to [HydraWidget].
+/// Exception thrown when no widget was provided to a `HydraWidget`.
 class HydraNoWidgetException implements Exception {
-  /// The error message.
-  final String message;
-
   /// Creates a [HydraNoWidgetException] with the given [message].
   const HydraNoWidgetException(this.message);
+
+  /// The error message.
+  final String message;
 
   @override
   String toString() => 'HydraNoWidgetException: $message';
