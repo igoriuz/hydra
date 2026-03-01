@@ -5,7 +5,7 @@ void main() {
   group('HydraBehaviour', () {
     group('default constructor', () {
       test('has correct default values', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour();
 
         expect(behaviour.breakpointSmall, kSmallBP);
@@ -16,7 +16,7 @@ void main() {
       });
 
       test('accepts custom breakpoints', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour(
           breakpointSmall: 400,
           breakpointMedium: 800,
@@ -30,16 +30,16 @@ void main() {
 
       test('asserts when breakpointSmall >= breakpointMedium', () {
         expect(
-          // ignore: prefer_const_constructors
-          () => HydraBehaviour(breakpointSmall: 900, breakpointMedium: 900),
+          // ignore: prefer_const_constructors, non-const needed for coverage
+          () => HydraBehaviour(breakpointSmall: 900),
           throwsA(isA<AssertionError>()),
         );
       });
 
       test('asserts when breakpointMedium >= breakpointLarge', () {
         expect(
-          // ignore: prefer_const_constructors
-          () => HydraBehaviour(breakpointMedium: 1200, breakpointLarge: 1200),
+          // ignore: prefer_const_constructors, non-const needed for coverage
+          () => HydraBehaviour(breakpointMedium: 1200),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -47,7 +47,7 @@ void main() {
 
     group('preferSmaller', () {
       test('has isSmallerScreenPreferred set to true', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour.preferSmaller();
 
         expect(behaviour.isSmallerScreenPreferred, isTrue);
@@ -58,7 +58,7 @@ void main() {
       });
 
       test('accepts custom breakpoints', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour.preferSmaller(
           breakpointSmall: 500,
           breakpointMedium: 700,
@@ -72,10 +72,7 @@ void main() {
 
       test('asserts when breakpointSmall >= breakpointMedium', () {
         expect(
-          () => HydraBehaviour.preferSmaller(
-            breakpointSmall: 900,
-            breakpointMedium: 900,
-          ),
+          () => HydraBehaviour.preferSmaller(breakpointSmall: 900),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -83,7 +80,7 @@ void main() {
 
     group('noOrientation', () {
       test('has isOrientationAware set to false', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour.noOrientation();
 
         expect(behaviour.isOrientationAware, isFalse);
@@ -94,7 +91,7 @@ void main() {
       });
 
       test('accepts custom breakpoints', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour.noOrientation(
           breakpointSmall: 450,
           breakpointMedium: 850,
@@ -108,10 +105,7 @@ void main() {
 
       test('asserts when breakpointMedium >= breakpointLarge', () {
         expect(
-          () => HydraBehaviour.noOrientation(
-            breakpointMedium: 1200,
-            breakpointLarge: 1200,
-          ),
+          () => HydraBehaviour.noOrientation(breakpointMedium: 1200),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -119,7 +113,7 @@ void main() {
 
     group('material', () {
       test('uses Material Design breakpoints', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour.material();
 
         expect(behaviour.breakpointSmall, 600);
@@ -130,7 +124,7 @@ void main() {
       });
 
       test('accepts custom flags', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors, non-const needed for coverage
         final behaviour = HydraBehaviour.material(
           isOrientationAware: false,
           isSmallerScreenPreferred: true,

@@ -18,32 +18,47 @@ void main() {
         expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.mini);
       });
 
-      test('returns small when only small is available at large breakpoint',
-          () {
-        const screenBP = kLargeBP;
-        final hydra = HydraWidget(small: small);
+      test(
+        'returns small when only small is available at large breakpoint',
+        () {
+          const screenBP = kLargeBP;
+          final hydra = HydraWidget(small: small);
 
-        expect(hydra.widgets.length, 1);
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.small);
-      });
+          expect(hydra.widgets.length, 1);
+          expect(
+            hydra.nearestWidget(screenBP).breakpoint,
+            Breakpoint.small,
+          );
+        },
+      );
 
-      test('returns medium when only medium is available at small breakpoint',
-          () {
-        const screenBP = kSmallBP;
-        final hydra = HydraWidget(medium: medium);
+      test(
+        'returns medium when only medium is available at small breakpoint',
+        () {
+          const screenBP = kSmallBP;
+          final hydra = HydraWidget(medium: medium);
 
-        expect(hydra.widgets.length, 1);
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.medium);
-      });
+          expect(hydra.widgets.length, 1);
+          expect(
+            hydra.nearestWidget(screenBP).breakpoint,
+            Breakpoint.medium,
+          );
+        },
+      );
 
-      test('returns large when only large is available at large breakpoint',
-          () {
-        const screenBP = kLargeBP;
-        final hydra = HydraWidget(large: large);
+      test(
+        'returns large when only large is available at large breakpoint',
+        () {
+          const screenBP = kLargeBP;
+          final hydra = HydraWidget(large: large);
 
-        expect(hydra.widgets.length, 1);
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.large);
-      });
+          expect(hydra.widgets.length, 1);
+          expect(
+            hydra.nearestWidget(screenBP).breakpoint,
+            Breakpoint.large,
+          );
+        },
+      );
     });
 
     group('next bigger screen', () {
@@ -65,65 +80,91 @@ void main() {
 
       test('large if only [mini, small, large] at medium breakpoint', () {
         const screenBP = kMediumBP;
-        final hydra = HydraWidget(mini: mini, small: small, large: large);
+        final hydra = HydraWidget(
+          mini: mini,
+          small: small,
+          large: large,
+        );
 
         expect(hydra.widgets.length, 3);
         expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.large);
       });
 
       test(
-          'small if only [mini, small, large] at width between small and medium',
-          () {
-        const screenBP = kSmallBP + 5;
-        final hydra = HydraWidget(mini: mini, small: small, large: large);
+        'small if only [mini, small, large] at width between small '
+        'and medium',
+        () {
+          const screenBP = kSmallBP + 5;
+          final hydra = HydraWidget(
+            mini: mini,
+            small: small,
+            large: large,
+          );
 
-        expect(hydra.widgets.length, 3);
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.small);
-      });
+          expect(hydra.widgets.length, 3);
+          expect(
+            hydra.nearestWidget(screenBP).breakpoint,
+            Breakpoint.small,
+          );
+        },
+      );
     });
 
     group('orientation awareness', () {
-      test('uses shortestSide when orientation awareness is off (vertical)',
-          () {
-        const verticalSize = Size(300, 700);
-        final hydra = HydraWidget(
-          mini: mini,
-          behaviour: const HydraBehaviour.noOrientation(),
-        );
-        expect(hydra.comparableWidth(verticalSize), verticalSize.shortestSide);
-      });
-
-      test('uses shortestSide when orientation awareness is off (horizontal)',
-          () {
-        const horizontalSize = Size(700, 300);
-        final hydra = HydraWidget(
-          mini: mini,
-          behaviour: const HydraBehaviour.noOrientation(),
-        );
-        expect(
-            hydra.comparableWidth(horizontalSize), horizontalSize.shortestSide);
-      });
-
-      test('uses shortestSide for vertical device when orientation aware', () {
-        const verticalSize = Size(300, 700);
-        final hydra = HydraWidget(
-          mini: mini,
-          behaviour: const HydraBehaviour(isOrientationAware: true),
-        );
-        expect(hydra.comparableWidth(verticalSize), verticalSize.shortestSide);
-      });
+      test(
+        'uses shortestSide when orientation awareness is off (vertical)',
+        () {
+          const verticalSize = Size(300, 700);
+          final hydra = HydraWidget(
+            mini: mini,
+            behaviour: const HydraBehaviour.noOrientation(),
+          );
+          expect(
+            hydra.comparableWidth(verticalSize),
+            verticalSize.shortestSide,
+          );
+        },
+      );
 
       test(
-          'uses width (longestSide) for horizontal device when orientation aware',
-          () {
-        const horizontalSize = Size(700, 300);
-        final hydra = HydraWidget(
-          mini: mini,
-          behaviour: const HydraBehaviour(isOrientationAware: true),
-        );
-        expect(
-            hydra.comparableWidth(horizontalSize), horizontalSize.longestSide);
-      });
+        'uses shortestSide when orientation awareness is off (horizontal)',
+        () {
+          const horizontalSize = Size(700, 300);
+          final hydra = HydraWidget(
+            mini: mini,
+            behaviour: const HydraBehaviour.noOrientation(),
+          );
+          expect(
+            hydra.comparableWidth(horizontalSize),
+            horizontalSize.shortestSide,
+          );
+        },
+      );
+
+      test(
+        'uses shortestSide for vertical device when orientation aware',
+        () {
+          const verticalSize = Size(300, 700);
+          final hydra = HydraWidget(mini: mini);
+          expect(
+            hydra.comparableWidth(verticalSize),
+            verticalSize.shortestSide,
+          );
+        },
+      );
+
+      test(
+        'uses width (longestSide) for horizontal device when '
+        'orientation aware',
+        () {
+          const horizontalSize = Size(700, 300);
+          final hydra = HydraWidget(mini: mini);
+          expect(
+            hydra.comparableWidth(horizontalSize),
+            horizontalSize.longestSide,
+          );
+        },
+      );
     });
 
     group('prefer smaller screen', () {
@@ -139,17 +180,20 @@ void main() {
       });
 
       test(
-          'large if only [mini, large] at medium breakpoint (bigger preferred)',
-          () {
-        const screenBP = kMediumBP;
-        final hydra = HydraWidget(
-          mini: mini,
-          large: large,
-          behaviour: const HydraBehaviour(isSmallerScreenPreferred: false),
-        );
+        'large if only [mini, large] at medium breakpoint (bigger preferred)',
+        () {
+          const screenBP = kMediumBP;
+          final hydra = HydraWidget(
+            mini: mini,
+            large: large,
+          );
 
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.large);
-      });
+          expect(
+            hydra.nearestWidget(screenBP).breakpoint,
+            Breakpoint.large,
+          );
+        },
+      );
     });
 
     group('exact breakpoint match', () {
@@ -173,7 +217,10 @@ void main() {
           behaviour: const HydraBehaviour.preferSmaller(),
         );
 
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.medium);
+        expect(
+          hydra.nearestWidget(screenBP).breakpoint,
+          Breakpoint.medium,
+        );
       });
 
       test('small at medium width with smaller preferred', () {
@@ -194,7 +241,6 @@ void main() {
           small: small,
           mini: mini,
           large: large,
-          behaviour: const HydraBehaviour(isSmallerScreenPreferred: false),
         );
 
         expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.large);
@@ -206,7 +252,6 @@ void main() {
           small: small,
           mini: mini,
           large: large,
-          behaviour: const HydraBehaviour(isSmallerScreenPreferred: false),
         );
 
         expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.mini);
@@ -221,12 +266,17 @@ void main() {
           behaviour: const HydraBehaviour(isSmallerScreenPreferred: true),
         );
 
-        expect(hydra.nearestWidget(screenBP).breakpoint, Breakpoint.medium);
+        expect(
+          hydra.nearestWidget(screenBP).breakpoint,
+          Breakpoint.medium,
+        );
       });
     });
 
     group('build', () {
-      testWidgets('renders the correct widget via MediaQuery', (tester) async {
+      testWidgets('renders the correct widget via MediaQuery', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MediaQuery(
             data: const MediaQueryData(size: Size(1400, 900)),

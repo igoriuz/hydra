@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'breakpoint.dart';
+import 'package:hydra/src/breakpoint.dart';
 
 /// {@template hydra_head}
 /// [HydraHead] pairs a [widget] with a [breakpoint] to define which device
 /// type the widget is intended for.
 /// {@endtemplate}
 class HydraHead {
-  /// The widget to display for this breakpoint.
-  final Widget widget;
-
-  /// The device type breakpoint this head targets.
-  final Breakpoint breakpoint;
-
+  /// {@macro hydra_head}
   const HydraHead._(this.widget, this.breakpoint);
 
   /// Creates a [HydraHead] targeting [Breakpoint.mini].
@@ -26,6 +21,12 @@ class HydraHead {
 
   /// Creates a [HydraHead] targeting [Breakpoint.large].
   const factory HydraHead.large(Widget widget) = _LargeHead;
+
+  /// The widget to display for this breakpoint.
+  final Widget widget;
+
+  /// The device type breakpoint this head targets.
+  final Breakpoint breakpoint;
 }
 
 class _MiniHead extends HydraHead {

@@ -5,7 +5,7 @@ void main() {
   group('HydraNoWidgetException', () {
     test('throws when no widgets are given', () {
       expect(
-        () => HydraWidget(),
+        HydraWidget.new,
         throwsA(isA<HydraNoWidgetException>()),
       );
     });
