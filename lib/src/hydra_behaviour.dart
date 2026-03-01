@@ -86,8 +86,8 @@ class HydraBehaviour {
   /// Breakpoints based on Material Design layout guidelines.
   ///
   /// - mini: < 600
-  /// - small: 600–839
-  /// - medium: 840–1199
+  /// - small: 600-839
+  /// - medium: 840-1199
   /// - large: >= 1200
   ///
   /// See: https://m3.material.io/foundations/layout/applying-layout
