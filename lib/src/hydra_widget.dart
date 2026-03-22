@@ -3,6 +3,7 @@ import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_head.dart';
 import 'package:hydra/src/hydra_no_widget_exception.dart';
+import 'package:hydra/src/hydra_resolver.dart';
 
 /// [HydraWidget] is a [StatelessWidget] that selects which widget to display
 /// based on the current screen size and [behaviour] configuration.
@@ -63,24 +64,18 @@ class HydraWidget extends StatelessWidget {
 
   /// Returns the comparable width based on orientation awareness.
   double comparableWidth(Size size) {
-    return behaviour.isOrientationAware ? size.width : size.shortestSide;
+    return HydraResolver(behaviour: behaviour).comparableWidth(size);
   }
 
   /// Finds the best matching [HydraHead] for the given [comparable] width.
   HydraHead nearestWidget(double comparable) {
-    final effectiveBreakpoint = _breakpointForWidth(comparable);
+    final resolver = HydraResolver(behaviour: behaviour);
+    final effectiveBreakpoint = resolver.resolveBreakpoint(comparable);
 
     return widgets.firstWhere(
       (element) => element.breakpoint == effectiveBreakpoint,
       orElse: () => _closestAlternative(effectiveBreakpoint),
     );
-  }
-
-  Breakpoint _breakpointForWidth(double width) {
-    if (width < behaviour.breakpointSmall) return Breakpoint.mini;
-    if (width < behaviour.breakpointMedium) return Breakpoint.small;
-    if (width < behaviour.breakpointLarge) return Breakpoint.medium;
-    return Breakpoint.large;
   }
 
   /// Finds the widget with the shortest distance to [target] breakpoint.
