@@ -1,3 +1,11 @@
+# 1.2.0
+
+* Added `HydraValue<T>` for responsive values without widgets
+* Added `context.hydra<T>()` extension for inline responsive values
+* Added `HydraResolver` with shared breakpoint resolution logic
+* Refactored `HydraWidget` to use `HydraResolver` internally (no breaking changes)
+* Updated README with new features and code examples
+
 # 1.1.4
 
 * Use `MediaQuery.sizeOf` instead of `MediaQuery.of` to reduce unnecessary rebuilds
