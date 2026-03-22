@@ -12,13 +12,23 @@ Responsive layouts are like the Hydra of Greek mythology - cut off one screen si
 
 Hydra tames the beast. Define up to four layout variants and let it pick the right one - with zero additional dependencies beyond Flutter itself.
 
+## Highlights
+
+- **Responsive widgets** - swap entire widgets based on screen size
+- **Responsive values** - adapt padding, font sizes, colors or any type `T`
+- **Smart fallbacks** - you don't need a variant for every breakpoint
+- **Zero dependencies** - only Flutter SDK, nothing else
+- **100% test coverage** - every line, every head
+
 ## Installation
 
 ```bash
 flutter pub add hydra
 ```
 
-## Quick Start
+## Responsive Widgets
+
+Use `HydraWidget` to display different widgets based on the current breakpoint:
 
 ```dart
 import 'package:hydra/hydra.dart';
@@ -31,6 +41,41 @@ HydraWidget(
 ```
 
 Hydra selects the best match for the current screen width. If no exact match exists, it falls back to the nearest available alternative.
+
+## Responsive Values
+
+Use `HydraValue<T>` when you need a responsive value instead of a whole widget:
+
+```dart
+final padding = HydraValue<double>(mini: 8, small: 16, large: 32);
+
+@override
+Widget build(BuildContext context) {
+  return Padding(
+    padding: EdgeInsets.all(padding.resolve(context)),
+    child: content,
+  );
+}
+```
+
+Or use the `BuildContext` extension for inline usage:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Padding(
+    padding: EdgeInsets.all(context.hydra<double>(mini: 8, large: 32)),
+    child: Text(
+      'Hello',
+      style: TextStyle(
+        fontSize: context.hydra<double>(mini: 14, medium: 16, large: 20),
+      ),
+    ),
+  );
+}
+```
+
+Works with any type - `double`, `EdgeInsets`, `TextStyle`, `Color`, or your own types.
 
 ## Breakpoints
 
@@ -65,6 +110,8 @@ HydraWidget(
 )
 ```
 
+Both `HydraWidget` and `HydraValue<T>` accept a `behaviour` parameter with the same options.
+
 ## Behaviour Options
 
 | Constructor | Description |
@@ -76,20 +123,13 @@ HydraWidget(
 
 ### Orientation Awareness
 
-By default, Hydra uses `MediaQuery.of(context).size.width` which changes when the device rotates. Set `isOrientationAware: false` (or use `HydraBehaviour.noOrientation()`) to use the shortest side instead - the layout stays consistent regardless of rotation.
+By default, Hydra uses `MediaQuery.sizeOf(context).width` which changes when the device rotates. Set `isOrientationAware: false` (or use `HydraBehaviour.noOrientation()`) to use the shortest side instead - the layout stays consistent regardless of rotation.
 
 ## How It Works
 
 1. **Breakpoint detection** - determines the current breakpoint from screen width
-2. **Exact match** - looks for a widget registered at that breakpoint
+2. **Exact match** - looks for a widget or value registered at that breakpoint
 3. **Nearest fallback** - if no exact match, picks the closest available alternative (prefers larger by default, configurable via `isSmallerScreenPreferred`)
-
-## Why Hydra?
-
-- **Zero dependencies** - only Flutter SDK, nothing else
-- **Tiny footprint** - a handful of classes, no bloat
-- **Smart fallbacks** - you don't need a widget for every breakpoint
-- **100% test coverage** - every line, every head
 
 ## License
 
