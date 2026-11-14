@@ -7,12 +7,12 @@
 * Added `Breakpoint.current(context)` for direct access to the active breakpoint
 * Added `HydraVisibility` to show a widget only within a range of breakpoints
 * Added `HydraGrid`, a grid with a column count per breakpoint
-* Added `HydraTransition` and the `transition` parameter of `HydraWidget` for animated breakpoint changes
+* Added `HydraTransition` (`fade`, `scale`, `size` or a custom builder) and the `transition` parameter of `HydraWidget` and `HydraVisibility` for animated breakpoint changes
 * Added `HydraBehaviour.bootstrap()`, `HydraBehaviour.tailwind()` and `HydraBehaviour.cupertino()` presets
 * `HydraBehaviour` now has value equality
 * `HydraTransition` takes an `alignment` for variants of different size
 * `HydraResolver.of(context)` resolves the scoped behaviour; `resolveValue` throws `HydraNoValueException` without any value
-* New showcase example app and README animation
+* New showcase example app and README animation; the example uses `package:material_ui`
 
 # 1.2.0
 

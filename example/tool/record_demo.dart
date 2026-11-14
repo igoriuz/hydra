@@ -5,7 +5,7 @@ import 'dart:ui' as ui;
 import 'package:example/demo_stage.dart';
 import 'package:example/showcase.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,14 +16,18 @@ const _pixelRatio = 1.5;
 /// (seconds, window width) - the width eases from one entry to the next.
 const _timeline = <(double, double)>[
   (0, 390),
-  (0.9, 390),
-  (2.1, 740),
-  (2.9, 740),
-  (4.1, 1050),
-  (4.9, 1050),
-  (6.1, 1320),
-  (7.4, 1320),
-  (9, 390),
+  (0.7, 390),
+  (1.7, 740),
+  (2.3, 740),
+  (3.3, 1050),
+  (3.9, 1050),
+  (4.9, 1320),
+  (5.8, 1320),
+  (6.7, 1050),
+  (7.2, 1050),
+  (8.1, 740),
+  (8.6, 740),
+  (9.5, 390),
 ];
 
 double _widthAt(double seconds) {
@@ -31,8 +35,9 @@ double _widthAt(double seconds) {
     final (start, from) = _timeline[i - 1];
     final (end, to) = _timeline[i];
     if (seconds <= end) {
-      final t =
-          Curves.easeInOutCubic.transform((seconds - start) / (end - start));
+      final t = Curves.easeInOutCubic.transform(
+        (seconds - start) / (end - start),
+      );
       return from + (to - from) * t;
     }
   }
@@ -91,8 +96,9 @@ void main() {
       width.value = _widthAt(frame / _fps);
       await tester.pump(const Duration(milliseconds: 1000 ~/ _fps));
       await tester.runAsync(() async {
-        final render = boundary.currentContext!.findRenderObject()!
-            as RenderRepaintBoundary;
+        final render =
+            boundary.currentContext!.findRenderObject()!
+                as RenderRepaintBoundary;
         final image = await render.toImage(pixelRatio: _pixelRatio);
         final png = await image.toByteData(format: ui.ImageByteFormat.png);
         image.dispose();

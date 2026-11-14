@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:example/reflow_grid.dart';
 import 'package:hydra/hydra.dart';
 
 final ThemeData showcaseTheme = ThemeData(
@@ -9,6 +10,7 @@ final ThemeData showcaseTheme = ThemeData(
 const _ink = Color(0xFF0B2A3A);
 const _muted = Color(0xFF6B8494);
 const _surface = Color(0xFFF3F7FA);
+const _motion = Duration(milliseconds: 450);
 
 /// One accent colour per breakpoint, shared by the page and the demo stage.
 Color breakpointColor(Breakpoint breakpoint) {
@@ -81,9 +83,15 @@ class ShowcasePage extends StatelessWidget {
       color: _surface,
       child: Row(
         children: [
-          // The side navigation only exists from `medium` on.
+          // The side navigation only exists from `medium` on and slides in
+          // from the left edge.
           const HydraVisibility(
             visibleFrom: Breakpoint.medium,
+            transition: HydraTransition.size(
+              duration: _motion,
+              curve: Curves.easeInOutCubic,
+              alignment: Alignment.centerLeft,
+            ),
             child: _SideNavigation(),
           ),
           Expanded(
@@ -91,26 +99,31 @@ class ShowcasePage extends StatelessWidget {
               children: [
                 // The search field fades in once there is room for it.
                 HydraWidget(
-                  transition: const HydraTransition.fade(),
+                  transition: const HydraTransition.fade(duration: _motion),
                   mini: const _Header(showSearch: false),
                   medium: const _Header(showSearch: true),
                 ),
+                // One to four columns. The cards glide to their new place.
                 Expanded(
-                  child: HydraGrid(
-                    mini: 1,
-                    small: 2,
-                    medium: 3,
-                    large: 4,
-                    padding: EdgeInsets.all(
-                      context.hydra<double>(mini: 16, small: 20, large: 28),
-                    ),
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: context.hydra<double>(
-                      mini: 2.7,
-                      small: 1.45,
-                      medium: 1.2,
-                      large: 1.12,
+                  child: ReflowGrid(
+                    spec: GridSpec(
+                      columns: context.hydra<int>(
+                        mini: 1,
+                        small: 2,
+                        medium: 3,
+                        large: 4,
+                      ),
+                      aspectRatio: context.hydra<double>(
+                        mini: 2.55,
+                        small: 1.45,
+                        medium: 1.2,
+                        large: 1.12,
+                      ),
+                      inset: context.hydra<double>(
+                        mini: 16,
+                        small: 20,
+                        large: 28,
+                      ),
                     ),
                     children: [
                       for (final creature in _creatures)
@@ -121,6 +134,12 @@ class ShowcasePage extends StatelessWidget {
                 // Phones and small tablets navigate at the bottom instead.
                 const HydraVisibility(
                   visibleUntil: Breakpoint.small,
+                  transition: HydraTransition.size(
+                    axis: Axis.vertical,
+                    duration: _motion,
+                    curve: Curves.easeInOutCubic,
+                    alignment: Alignment.topCenter,
+                  ),
                   child: _BottomNavigation(),
                 ),
               ],
@@ -141,7 +160,9 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final inset = context.hydra<double>(mini: 16, small: 20, large: 28);
 
-    return Padding(
+    return AnimatedPadding(
+      duration: _motion,
+      curve: Curves.easeInOutCubic,
       padding: EdgeInsets.fromLTRB(inset, 22, inset, 4),
       child: Row(
         children: [
@@ -167,10 +188,7 @@ class _Header extends StatelessWidget {
               ],
             ),
           ),
-          if (showSearch) ...[
-            const _SearchField(),
-            const SizedBox(width: 14),
-          ],
+          if (showSearch) ...[const _SearchField(), const SizedBox(width: 14)],
           HydraBuilder(
             builder: (context, breakpoint) {
               return AnimatedContainer(
@@ -264,23 +282,34 @@ class _CreatureCard extends StatelessWidget {
                 color: Colors.white.withValues(alpha: 0.16),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(18),
+            // Pinned to the corners rather than stacked in a column, so a
+            // card that is briefly short mid-transition cannot overflow.
+            Positioned(
+              left: 18,
+              top: 18,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.22),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(creature.icon, color: Colors.white, size: 22),
+              ),
+            ),
+            Positioned(
+              left: 18,
+              right: 18,
+              bottom: 16,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.22),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(creature.icon, color: Colors.white, size: 22),
-                  ),
-                  const Spacer(),
                   Text(
                     creature.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -289,6 +318,9 @@ class _CreatureCard extends StatelessWidget {
                   ),
                   Text(
                     creature.origin,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.82),
                       fontSize: 14,
@@ -313,8 +345,8 @@ class _SideNavigation extends StatelessWidget {
     final extended = Breakpoint.current(context) == Breakpoint.large;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: _motion,
+      curve: Curves.easeInOutCubic,
       width: extended ? 232 : 84,
       color: _ink,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
@@ -324,11 +356,7 @@ class _SideNavigation extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: _Labelled(
-              icon: const Icon(
-                Icons.water,
-                color: Color(0xFF12CDB5),
-                size: 30,
-              ),
+              icon: const Icon(Icons.water, color: Color(0xFF12CDB5), size: 30),
               label: extended ? 'HYDRA' : null,
               style: const TextStyle(
                 color: Colors.white,

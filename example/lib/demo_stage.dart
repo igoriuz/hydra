@@ -1,5 +1,5 @@
 import 'package:example/showcase.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hydra/hydra.dart';
 
 /// Presents [ShowcasePage] in a window of the given logical [width] above a
@@ -68,7 +68,7 @@ class DemoStage extends StatelessWidget {
                 left: _left + starts[breakpoint.index] * _scale,
                 width:
                     (starts[breakpoint.index + 1] - starts[breakpoint.index]) *
-                        _scale,
+                    _scale,
                 top: _rulerTop,
                 child: _Segment(
                   breakpoint: breakpoint,

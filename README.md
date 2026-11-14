@@ -17,12 +17,14 @@ Hydra tames the beast. Describe what changes at up to four breakpoints and let i
 </p>
 
 <p align="center">
-  The animation is the <a href="example">example app</a>: one widget tree, resized from 390 to 1320 px.
+  This is the <a href="example">example app</a>: one widget tree, resized from 390 to 1320 px and back.
+  Navigation, header and grid are plain Hydra widgets - including the transitions.
 </p>
 
 ## Highlights
 
-- **Responsive widgets** - swap entire widgets per breakpoint, optionally animated
+- **Responsive widgets** - swap entire widgets per breakpoint
+- **Animated transitions** - widgets fade, scale or slide in and out instead of jumping
 - **Responsive values** - adapt padding, font sizes, colors or any type `T`
 - **Building blocks** - visibility, grid and builder widgets for the common cases
 - **Configure once** - one `HydraScope` instead of a `behaviour` on every widget
@@ -81,9 +83,10 @@ HydraWidget(
 |---|---|
 | `HydraTransition.fade()` | Cross-fades the old and the new widget |
 | `HydraTransition.scale()` | Fades and scales the new widget in |
+| `HydraTransition.size()` | Collapses the old widget and expands the new one along an axis |
 | `HydraTransition(builder: ...)` | Your own `AnimatedSwitcher` transition builder |
 
-All of them take a `duration` (300 ms by default), a `curve` and an `alignment` for variants of different size.
+All of them take a `duration` (300 ms by default), a `curve` and an `alignment` for variants of different size. The same transitions work on [`HydraVisibility`](#visibility).
 
 ## Responsive Values
 
@@ -165,6 +168,16 @@ HydraVisibility(
 
 Pass a `replacement` to show something else instead of nothing.
 
+With a `transition` the child animates in and out, and the layout around it makes room gradually:
+
+```dart
+HydraVisibility(
+  visibleFrom: Breakpoint.medium,
+  transition: const HydraTransition.size(alignment: Alignment.centerLeft),
+  child: const SideNavigation(),
+)
+```
+
 ## Grid
 
 `HydraGrid` is a `GridView.count` whose column count depends on the breakpoint:
@@ -244,7 +257,7 @@ Everything below it - `HydraWidget`, `HydraValue`, `context.hydra`, `HydraBuilde
 
 ## Example
 
-The [example app](example) is the one from the animation above. Run it and resize the window:
+The [example app](example) is the one from the animation above: a side navigation that slides in, a bottom bar that slides out, a search field that fades in and cards that glide to their new columns. Run it and resize the window:
 
 ```bash
 cd example
