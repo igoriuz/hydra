@@ -5,6 +5,7 @@ import 'package:hydra/src/hydra_head.dart';
 import 'package:hydra/src/hydra_no_widget_exception.dart';
 import 'package:hydra/src/hydra_resolver.dart';
 import 'package:hydra/src/hydra_scope.dart';
+import 'package:hydra/src/hydra_transition.dart';
 
 /// [HydraWidget] is a [StatelessWidget] that selects which widget to display
 /// based on the current screen size and [behaviour] configuration.
@@ -18,6 +19,7 @@ class HydraWidget extends StatelessWidget {
   HydraWidget({
     super.key,
     this.behaviour,
+    this.transition,
     Widget? mini,
     Widget? small,
     Widget? medium,
@@ -34,6 +36,11 @@ class HydraWidget extends StatelessWidget {
   ///
   /// When `null`, the behaviour of the nearest [HydraScope] is used.
   final HydraBehaviour? behaviour;
+
+  /// How to animate when the breakpoint changes the displayed widget.
+  ///
+  /// When `null`, the widget is swapped instantly.
+  final HydraTransition? transition;
 
   /// The resolved list of widget alternatives, ordered by preference.
   final List<HydraHead> widgets;
@@ -65,7 +72,21 @@ class HydraWidget extends StatelessWidget {
       behaviour: behaviour ?? HydraScope.of(context),
     );
     final width = resolver.comparableWidth(MediaQuery.sizeOf(context));
-    return _nearest(resolver, width).widget;
+    final head = _nearest(resolver, width);
+
+    final transition = this.transition;
+    if (transition == null) return head.widget;
+
+    return AnimatedSwitcher(
+      duration: transition.duration,
+      switchInCurve: transition.curve,
+      switchOutCurve: transition.curve,
+      transitionBuilder: transition.builder,
+      child: KeyedSubtree(
+        key: ValueKey(head.breakpoint),
+        child: head.widget,
+      ),
+    );
   }
 
   /// Returns the comparable width based on orientation awareness.
