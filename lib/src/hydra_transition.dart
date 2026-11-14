@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-/// [HydraTransition] describes how `HydraWidget` animates from one screen
-/// alternative to another when the breakpoint changes.
+/// [HydraTransition] describes how `HydraWidget` and `HydraVisibility`
+/// animate from one widget to another when the breakpoint changes.
 ///
 /// ```dart
 /// HydraWidget(
@@ -34,6 +34,16 @@ class HydraTransition {
     this.alignment = Alignment.center,
   }) : builder = _scale;
 
+  /// Collapses the outgoing widget along [axis] while the incoming one
+  /// expands, so the surrounding layout makes room gradually. Suited to
+  /// widgets that appear and disappear, like a side navigation.
+  const HydraTransition.size({
+    Axis axis = Axis.horizontal,
+    this.duration = defaultDuration,
+    this.curve = Curves.easeInOut,
+    this.alignment = Alignment.center,
+  }) : builder = axis == Axis.horizontal ? _sizeHorizontal : _sizeVertical;
+
   /// The duration used when none is given.
   static const Duration defaultDuration = Duration(milliseconds: 300);
 
@@ -50,6 +60,40 @@ class HydraTransition {
 
   /// Wraps the incoming and the outgoing widget in an animated widget.
   final AnimatedSwitcherTransitionBuilder builder;
+
+  /// Builds the widget that animates from the previously shown [child] to
+  /// the given one. A new [state] starts the transition; rebuilding with
+  /// the same [state] only updates the [child].
+  Widget animate({required Object state, required Widget child}) {
+    return AnimatedSwitcher(
+      duration: duration,
+      switchInCurve: curve,
+      switchOutCurve: curve,
+      transitionBuilder: builder,
+      layoutBuilder: (currentChild, previousChildren) {
+        return Stack(
+          alignment: alignment,
+          children: [
+            ...previousChildren,
+            if (currentChild != null) currentChild,
+          ],
+        );
+      },
+      child: KeyedSubtree(key: ValueKey(state), child: child),
+    );
+  }
+
+  static Widget _sizeHorizontal(Widget child, Animation<double> animation) {
+    return SizeTransition(
+      axis: Axis.horizontal,
+      sizeFactor: animation,
+      child: child,
+    );
+  }
+
+  static Widget _sizeVertical(Widget child, Animation<double> animation) {
+    return SizeTransition(sizeFactor: animation, child: child);
+  }
 
   static Widget _scale(Widget child, Animation<double> animation) {
     return FadeTransition(

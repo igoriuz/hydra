@@ -1,0 +1,8 @@
+# The example is analyzed with the analyzer defaults; the package's lint
+# set in ../analysis_options.yaml excludes it.
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
