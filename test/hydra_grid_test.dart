@@ -102,6 +102,34 @@ void main() {
       expect(grid.physics, isA<NeverScrollableScrollPhysics>());
     });
 
+    testWidgets('builder builds only the children that are needed', (
+      tester,
+    ) async {
+      final built = <int>{};
+      final grid = HydraGrid.builder(
+        mini: 2,
+        large: 4,
+        itemCount: 1000,
+        itemBuilder: (context, index) {
+          built.add(index);
+          return Text('$index');
+        },
+      );
+
+      expect(await _columns(tester, 300, grid), 2);
+      expect(find.text('0'), findsOneWidget);
+      expect(built.length, lessThan(100));
+
+      expect(await _columns(tester, 1400, grid), 4);
+    });
+
+    test('builder asserts when no column count is given', () {
+      expect(
+        () => HydraGrid.builder(itemBuilder: (context, index) => null),
+        throwsA(isA<AssertionError>()),
+      );
+    });
+
     test('asserts when no column count is given', () {
       expect(
         () => HydraGrid(children: _children),

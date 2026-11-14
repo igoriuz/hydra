@@ -21,7 +21,8 @@ import 'package:hydra/src/hydra_scope.dart';
 /// )
 /// ```
 ///
-/// The grid is a [GridView.count]; the layout parameters are passed through.
+/// The grid is a [GridView]; the layout parameters are passed through. Use
+/// [HydraGrid.builder] to build the children lazily.
 class HydraGrid extends StatelessWidget {
   /// Creates a [HydraGrid] with a column count per breakpoint.
   const HydraGrid({
@@ -38,13 +39,45 @@ class HydraGrid extends StatelessWidget {
     this.shrinkWrap = false,
     this.physics,
     super.key,
-  }) : assert(
+  })  : itemBuilder = null,
+        itemCount = null,
+        assert(
           mini != null || small != null || medium != null || large != null,
           'At least one column count is needed',
         );
 
-  /// The widgets to lay out in the grid.
+  /// Creates a [HydraGrid] that builds its children on demand, for long or
+  /// infinite grids. See [GridView.builder].
+  const HydraGrid.builder({
+    required NullableIndexedWidgetBuilder this.itemBuilder,
+    this.itemCount,
+    this.mini,
+    this.small,
+    this.medium,
+    this.large,
+    this.behaviour,
+    this.mainAxisSpacing = 0,
+    this.crossAxisSpacing = 0,
+    this.childAspectRatio = 1,
+    this.padding,
+    this.shrinkWrap = false,
+    this.physics,
+    super.key,
+  })  : children = const [],
+        assert(
+          mini != null || small != null || medium != null || large != null,
+          'At least one column count is needed',
+        );
+
+  /// The widgets to lay out in the grid. Empty for [HydraGrid.builder].
   final List<Widget> children;
+
+  /// Builds the children on demand. Only set by [HydraGrid.builder].
+  final NullableIndexedWidgetBuilder? itemBuilder;
+
+  /// The number of children of [HydraGrid.builder]; `null` for an infinite
+  /// grid.
+  final int? itemCount;
 
   /// Number of columns at the mini breakpoint.
   final int? mini;
@@ -93,15 +126,22 @@ class HydraGrid extends StatelessWidget {
       large: large,
     );
 
-    return GridView.count(
+    final gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: columns,
       mainAxisSpacing: mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing,
       childAspectRatio: childAspectRatio,
+    );
+    final itemBuilder = this.itemBuilder;
+
+    return GridView.custom(
+      gridDelegate: gridDelegate,
       padding: padding,
       shrinkWrap: shrinkWrap,
       physics: physics,
-      children: children,
+      childrenDelegate: itemBuilder == null
+          ? SliverChildListDelegate(children)
+          : SliverChildBuilderDelegate(itemBuilder, childCount: itemCount),
     );
   }
 }
