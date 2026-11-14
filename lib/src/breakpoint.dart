@@ -1,3 +1,8 @@
+import 'package:flutter/widgets.dart';
+import 'package:hydra/src/hydra_behaviour.dart';
+import 'package:hydra/src/hydra_resolver.dart';
+import 'package:hydra/src/hydra_scope.dart';
+
 /// [Breakpoint] is used to distinguish between several device types.
 ///
 /// Comparison between [Breakpoint]s is handled to the getter method `index`.
@@ -22,5 +27,24 @@ enum Breakpoint {
   medium,
 
   /// Biggest available breakpoint.
-  large,
+  large;
+
+  /// Returns the [Breakpoint] that is active for the screen of [context].
+  ///
+  /// Without a [behaviour], the one of the nearest [HydraScope] is used.
+  /// The calling widget rebuilds when the screen size changes.
+  ///
+  /// ```dart
+  /// if (Breakpoint.current(context).index >= Breakpoint.medium.index) {
+  ///   showSideNavigation();
+  /// }
+  /// ```
+  static Breakpoint current(BuildContext context, {HydraBehaviour? behaviour}) {
+    final resolver = HydraResolver(
+      behaviour: behaviour ?? HydraScope.of(context),
+    );
+    return resolver.resolveBreakpoint(
+      resolver.comparableWidth(MediaQuery.sizeOf(context)),
+    );
+  }
 }
