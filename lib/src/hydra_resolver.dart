@@ -39,10 +39,7 @@ class HydraResolver {
   }
 
   /// Resolves the best value from four nullable candidates for the given
-  /// [width]. Uses nearest-breakpoint fallback, respecting
-  /// `isSmallerScreenPreferred`.
-  ///
-  /// Throws a [HydraNoValueException] when all candidates are `null`.
+  /// [width]. See [resolveValueAt].
   T resolveValue<T>(
     double width, {
     T? mini,
@@ -50,8 +47,27 @@ class HydraResolver {
     T? medium,
     T? large,
   }) {
-    final target = resolveBreakpoint(width);
+    return resolveValueAt<T>(
+      resolveBreakpoint(width),
+      mini: mini,
+      small: small,
+      medium: medium,
+      large: large,
+    );
+  }
 
+  /// Resolves the best value from four nullable candidates for the
+  /// [target] breakpoint. Uses nearest-breakpoint fallback, respecting
+  /// `isSmallerScreenPreferred`.
+  ///
+  /// Throws a [HydraNoValueException] when all candidates are `null`.
+  T resolveValueAt<T>(
+    Breakpoint target, {
+    T? mini,
+    T? small,
+    T? medium,
+    T? large,
+  }) {
     final entries = <Breakpoint, T>{
       if (mini != null) Breakpoint.mini: mini,
       if (small != null) Breakpoint.small: small,

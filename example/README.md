@@ -11,7 +11,7 @@ Needs Flutter 3.47 or newer (the app uses `package:material_ui`).
 
 | File | What it shows |
 |---|---|
-| `lib/showcase.dart` | The app: `HydraWidget` and `HydraVisibility` with transitions, `HydraBuilder`, `Breakpoint.current` and `context.hydra` |
+| `lib/showcase.dart` | The app: `HydraScope`, `HydraWidget` and `HydraVisibility` with transitions, `HydraBuilder`, `Breakpoint.current` and `context.hydra` |
 | `lib/reflow_grid.dart` | A grid that animates between the column counts Hydra resolves |
 | `lib/demo_stage.dart` | The stage that resizes the app for the README animation |
 | `tool/record_demo.sh` | Renders that animation to `.github/demo.gif` (needs `ffmpeg`) |

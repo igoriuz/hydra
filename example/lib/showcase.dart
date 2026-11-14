@@ -79,74 +79,84 @@ class ShowcasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: _surface,
-      child: Row(
-        children: [
-          // The side navigation only exists from `medium` on and slides in
-          // from the left edge.
-          const HydraVisibility(
-            visibleFrom: Breakpoint.medium,
-            transition: HydraTransition.size(
-              duration: _motion,
-              curve: Curves.easeInOutCubic,
-              alignment: Alignment.centerLeft,
-            ),
-            child: _SideNavigation(),
+    // The scope resolves the breakpoint once. Everything below rebuilds
+    // only when it changes, not on every pixel of a window resize.
+    return const HydraScope(
+      behaviour: HydraBehaviour(),
+      child: Material(color: _surface, child: _Layout()),
+    );
+  }
+}
+
+class _Layout extends StatelessWidget {
+  const _Layout();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        // The side navigation only exists from `medium` on and slides in
+        // from the left edge.
+        const HydraVisibility(
+          visibleFrom: Breakpoint.medium,
+          transition: HydraTransition.size(
+            duration: _motion,
+            curve: Curves.easeInOutCubic,
+            alignment: Alignment.centerLeft,
           ),
-          Expanded(
-            child: Column(
-              children: [
-                // The search field fades in once there is room for it.
-                HydraWidget(
-                  transition: const HydraTransition.fade(duration: _motion),
-                  mini: const _Header(showSearch: false),
-                  medium: const _Header(showSearch: true),
+          child: _SideNavigation(),
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              // The search field fades in once there is room for it.
+              HydraWidget(
+                transition: const HydraTransition.fade(duration: _motion),
+                mini: const _Header(showSearch: false),
+                medium: const _Header(showSearch: true),
+              ),
+              // One to four columns. The cards glide to their new place.
+              const Expanded(child: _CreatureGrid()),
+              // Phones and small tablets navigate at the bottom instead.
+              const HydraVisibility(
+                visibleUntil: Breakpoint.small,
+                transition: HydraTransition.size(
+                  axis: Axis.vertical,
+                  duration: _motion,
+                  curve: Curves.easeInOutCubic,
+                  alignment: Alignment.topCenter,
                 ),
-                // One to four columns. The cards glide to their new place.
-                Expanded(
-                  child: ReflowGrid(
-                    spec: GridSpec(
-                      columns: context.hydra<int>(
-                        mini: 1,
-                        small: 2,
-                        medium: 3,
-                        large: 4,
-                      ),
-                      aspectRatio: context.hydra<double>(
-                        mini: 2.55,
-                        small: 1.45,
-                        medium: 1.2,
-                        large: 1.12,
-                      ),
-                      inset: context.hydra<double>(
-                        mini: 16,
-                        small: 20,
-                        large: 28,
-                      ),
-                    ),
-                    children: [
-                      for (final creature in _creatures)
-                        _CreatureCard(creature),
-                    ],
-                  ),
-                ),
-                // Phones and small tablets navigate at the bottom instead.
-                const HydraVisibility(
-                  visibleUntil: Breakpoint.small,
-                  transition: HydraTransition.size(
-                    axis: Axis.vertical,
-                    duration: _motion,
-                    curve: Curves.easeInOutCubic,
-                    alignment: Alignment.topCenter,
-                  ),
-                  child: _BottomNavigation(),
-                ),
-              ],
-            ),
+                child: _BottomNavigation(),
+              ),
+            ],
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+final List<Widget> _cards = [
+  for (final creature in _creatures) _CreatureCard(creature),
+];
+
+class _CreatureGrid extends StatelessWidget {
+  const _CreatureGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    return ReflowGrid(
+      spec: GridSpec(
+        columns: context.hydra<int>(mini: 1, small: 2, medium: 3, large: 4),
+        aspectRatio: context.hydra<double>(
+          mini: 2.55,
+          small: 1.45,
+          medium: 1.2,
+          large: 1.12,
+        ),
+        inset: context.hydra<double>(mini: 16, small: 20, large: 28),
       ),
+      children: _cards,
     );
   }
 }

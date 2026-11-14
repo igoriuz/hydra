@@ -29,6 +29,7 @@ Hydra tames the beast. Describe what changes at up to four breakpoints and let i
 - **Building blocks** - visibility, grid and builder widgets for the common cases
 - **Configure once** - one `HydraScope` instead of a `behaviour` on every widget
 - **Smart fallbacks** - you don't need a variant for every breakpoint
+- **Cheap rebuilds** - below a `HydraScope`, widgets rebuild per breakpoint, not per pixel
 - **Zero dependencies** - only Flutter SDK, nothing else
 - **100% test coverage** - every line, every head
 
@@ -248,6 +249,26 @@ HydraScope(
 ```
 
 Everything below it - `HydraWidget`, `HydraValue`, `context.hydra`, `HydraBuilder`, `HydraVisibility`, `HydraGrid` and `Breakpoint.current` - uses the scoped behaviour. A `behaviour` passed directly still wins.
+
+## Performance
+
+Hydra reads the screen size with `MediaQuery.sizeOf`, so it ignores unrelated changes such as the keyboard or text scaling. Two things keep rebuilds down while a window is resized:
+
+- **Use a `HydraScope`.** It resolves the breakpoint once, from the screen size at its place in the tree, and everything below it rebuilds only when the breakpoint changes instead of on every pixel. A `MediaQuery` with a different size below the scope, like a preview frame or a split view, needs a `HydraScope` of its own.
+- **`HydraBuilder` rebuilds per breakpoint.** Its builder only runs again when the breakpoint changes, with or without a scope.
+
+For long lists, `HydraGrid.builder` builds its children on demand:
+
+```dart
+HydraGrid.builder(
+  mini: 2,
+  large: 4,
+  itemCount: products.length,
+  itemBuilder: (context, index) => ProductCard(products[index]),
+)
+```
+
+`HydraVisibility` removes a hidden child from the tree. Set `maintainState: true` to keep it alive instead - its state survives, and it is not rebuilt from scratch when it comes back.
 
 ## How It Works
 

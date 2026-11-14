@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_head.dart';
 import 'package:hydra/src/hydra_no_widget_exception.dart';
@@ -67,7 +68,10 @@ class HydraWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolver = HydraResolver.of(context, behaviour: behaviour);
-    final head = _nearest(resolver, resolver.widthOf(context));
+    final head = _nearest(
+      resolver,
+      Breakpoint.current(context, behaviour: behaviour),
+    );
 
     final transition = this.transition;
     if (transition == null) return head.widget;
@@ -84,16 +88,17 @@ class HydraWidget extends StatelessWidget {
   ///
   /// Uses the local [behaviour] only; a `HydraScope` is not consulted.
   HydraHead nearestWidget(double comparable) {
-    return _nearest(_localResolver, comparable);
+    final resolver = _localResolver;
+    return _nearest(resolver, resolver.resolveBreakpoint(comparable));
   }
 
   HydraResolver get _localResolver {
     return HydraResolver(behaviour: behaviour ?? const HydraBehaviour());
   }
 
-  HydraHead _nearest(HydraResolver resolver, double comparable) {
-    return resolver.resolveValue<HydraHead>(
-      comparable,
+  HydraHead _nearest(HydraResolver resolver, Breakpoint breakpoint) {
+    return resolver.resolveValueAt<HydraHead>(
+      breakpoint,
       mini: _mini,
       small: _small,
       medium: _medium,

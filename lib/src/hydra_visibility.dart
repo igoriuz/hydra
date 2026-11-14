@@ -30,8 +30,12 @@ class HydraVisibility extends StatelessWidget {
     this.replacement = const SizedBox.shrink(),
     this.behaviour,
     this.transition,
+    this.maintainState = false,
     super.key,
-  });
+  }) : assert(
+          !maintainState || transition == null,
+          'maintainState cannot be combined with a transition',
+        );
 
   /// The widget to show within the breakpoint range.
   final Widget child;
@@ -60,6 +64,14 @@ class HydraVisibility extends StatelessWidget {
   /// When `null`, they are swapped instantly.
   final HydraTransition? transition;
 
+  /// Whether the hidden [child] stays in the tree, keeping its state and
+  /// saving the cost of building it again when it becomes visible.
+  ///
+  /// The hidden child takes no space, is not painted and its animations
+  /// are paused. The [replacement] is not shown in this mode, and it
+  /// cannot be combined with a [transition].
+  final bool maintainState;
+
   @override
   Widget build(BuildContext context) {
     final current = Breakpoint.current(context, behaviour: behaviour).index;
@@ -67,6 +79,10 @@ class HydraVisibility extends StatelessWidget {
     final until = visibleUntil?.index ?? Breakpoint.values.last.index;
 
     final visible = from <= current && current <= until;
+    if (maintainState) {
+      return Visibility(visible: visible, maintainState: true, child: child);
+    }
+
     final shown = visible ? child : replacement;
 
     return transition?.animate(state: visible, child: shown) ?? shown;
