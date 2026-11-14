@@ -100,6 +100,53 @@ void main() {
       expect(HydraTransition.scale(duration: duration).duration, duration);
     });
 
+    testWidgets('aligns differently sized widgets as configured', (
+      tester,
+    ) async {
+      const transition = HydraTransition.fade(alignment: Alignment.centerLeft);
+
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(size: Size(300, 800)),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: HydraWidget(
+                transition: transition,
+                mini: const SizedBox(key: Key('narrow'), width: 80, height: 50),
+                large: const SizedBox(key: Key('wide'), width: 200, height: 50),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(size: Size(1400, 800)),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: HydraWidget(
+                transition: transition,
+                mini: const SizedBox(key: Key('narrow'), width: 80, height: 50),
+                large: const SizedBox(key: Key('wide'), width: 200, height: 50),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 150));
+
+      // Both are on screen mid-transition; the narrow one must stay at the
+      // left edge instead of being centred over the wide one.
+      expect(tester.getTopLeft(find.byKey(const Key('narrow'))).dx, 0);
+      expect(tester.getTopLeft(find.byKey(const Key('wide'))).dx, 0);
+
+      await tester.pumpAndSettle();
+    });
+
     testWidgets('uses a custom builder', (tester) async {
       final transition = HydraTransition(
         builder: (child, animation) {

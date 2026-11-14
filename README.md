@@ -83,7 +83,7 @@ HydraWidget(
 | `HydraTransition.scale()` | Fades and scales the new widget in |
 | `HydraTransition(builder: ...)` | Your own `AnimatedSwitcher` transition builder |
 
-All of them take a `duration` (300 ms by default) and a `curve`.
+All of them take a `duration` (300 ms by default), a `curve` and an `alignment` for variants of different size.
 
 ## Responsive Values
 

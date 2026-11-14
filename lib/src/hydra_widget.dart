@@ -82,6 +82,15 @@ class HydraWidget extends StatelessWidget {
       switchInCurve: transition.curve,
       switchOutCurve: transition.curve,
       transitionBuilder: transition.builder,
+      layoutBuilder: (currentChild, previousChildren) {
+        return Stack(
+          alignment: transition.alignment,
+          children: [
+            ...previousChildren,
+            if (currentChild != null) currentChild,
+          ],
+        );
+      },
       child: KeyedSubtree(
         key: ValueKey(head.breakpoint),
         child: head.widget,
