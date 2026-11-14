@@ -30,6 +30,26 @@ Future<List<Breakpoint>> _visibleAt(
   return visible;
 }
 
+class _Counted extends StatefulWidget {
+  const _Counted({required this.onCreated});
+
+  final VoidCallback onCreated;
+
+  @override
+  State<_Counted> createState() => _CountedState();
+}
+
+class _CountedState extends State<_Counted> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onCreated();
+  }
+
+  @override
+  Widget build(BuildContext context) => const Text('child');
+}
+
 void main() {
   group('HydraVisibility', () {
     testWidgets('is always visible without bounds', (tester) async {
@@ -171,6 +191,46 @@ void main() {
 
       expect(tester.hasRunningAnimations, isFalse);
       expect(find.text('child'), findsOneWidget);
+    });
+
+    for (final maintainState in [false, true]) {
+      testWidgets('child state with maintainState: $maintainState', (
+        tester,
+      ) async {
+        var created = 0;
+        Widget host(double width) {
+          return MediaQuery(
+            data: MediaQueryData(size: Size(width, 800)),
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: HydraVisibility(
+                visibleUntil: Breakpoint.small,
+                maintainState: maintainState,
+                child: _Counted(onCreated: () => created++),
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(host(300));
+        await tester.pumpWidget(host(1000));
+        expect(find.text('child'), findsNothing);
+
+        await tester.pumpWidget(host(300));
+        expect(find.text('child'), findsOneWidget);
+        expect(created, maintainState ? 1 : 2);
+      });
+    }
+
+    test('asserts when maintainState is combined with a transition', () {
+      expect(
+        () => HydraVisibility(
+          maintainState: true,
+          transition: const HydraTransition.fade(),
+          child: Text(['child'].first),
+        ),
+        throwsA(isA<AssertionError>()),
+      );
     });
 
     testWidgets('respects its behaviour', (tester) async {
