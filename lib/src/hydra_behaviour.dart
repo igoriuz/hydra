@@ -101,6 +101,55 @@ class HydraBehaviour {
         breakpointMedium = 840,
         breakpointLarge = 1200;
 
+  /// Breakpoints based on the Bootstrap 5 grid (`sm` / `md` / `lg`).
+  ///
+  /// - mini: < 576
+  /// - small: 576-767
+  /// - medium: 768-991
+  /// - large: >= 992
+  ///
+  /// See: https://getbootstrap.com/docs/5.3/layout/breakpoints/
+  const HydraBehaviour.bootstrap({
+    this.isOrientationAware = true,
+    this.isSmallerScreenPreferred = false,
+  })  : breakpointSmall = 576,
+        breakpointMedium = 768,
+        breakpointLarge = 992;
+
+  /// Breakpoints based on the Tailwind CSS defaults (`sm` / `md` / `lg`).
+  ///
+  /// - mini: < 640
+  /// - small: 640-767
+  /// - medium: 768-1023
+  /// - large: >= 1024
+  ///
+  /// See: https://tailwindcss.com/docs/responsive-design
+  const HydraBehaviour.tailwind({
+    this.isOrientationAware = true,
+    this.isSmallerScreenPreferred = false,
+  })  : breakpointSmall = 640,
+        breakpointMedium = 768,
+        breakpointLarge = 1024;
+
+  /// Breakpoints derived from Apple device widths in points.
+  ///
+  /// Apple publishes no breakpoint system; these values follow common
+  /// device widths: 428 (largest iPhone in portrait), 768 (iPad in
+  /// portrait) and 1024 (iPad in landscape).
+  ///
+  /// - mini: < 428
+  /// - small: 428-767
+  /// - medium: 768-1023
+  /// - large: >= 1024
+  ///
+  /// See: https://developer.apple.com/design/human-interface-guidelines/layout
+  const HydraBehaviour.cupertino({
+    this.isOrientationAware = true,
+    this.isSmallerScreenPreferred = false,
+  })  : breakpointSmall = 428,
+        breakpointMedium = 768,
+        breakpointLarge = 1024;
+
   /// Breakpoint threshold between [Breakpoint.mini] and [Breakpoint.small].
   final double breakpointSmall;
 
