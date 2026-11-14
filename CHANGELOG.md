@@ -1,3 +1,12 @@
+# 2.0.1
+
+* `HydraBuilder` runs its builder only when the breakpoint changes, not on every change of the screen size
+* `HydraScope` resolves the breakpoint once; widgets and values that share its `MediaQuery` rebuild only when the breakpoint changes. Place it below your app widget (e.g. in `MaterialApp.builder`) to benefit
+* `HydraScope` is now a `StatelessWidget`; `HydraScope.of(context)` is unchanged, `HydraScope.breakpointOf(context)` is new
+* Added `HydraGrid.builder` for lazily built grids
+* Added `maintainState` to `HydraVisibility` to keep a hidden child alive
+* Added `HydraResolver.resolveValueAt` to resolve by breakpoint instead of width
+
 # 2.0.0
 
 * **Breaking:** `behaviour` of `HydraWidget`, `HydraValue` and `context.hydra<T>()` is now optional and falls back to the nearest `HydraScope`. The `behaviour` fields are nullable as a result - code reading e.g. `widget.behaviour.breakpointSmall` needs a null check
