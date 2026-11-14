@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydra/src/breakpoint.dart';
 
 /// Breakpoint to distinguish the width of the device.
@@ -35,6 +36,7 @@ const double kLargeBP = 1200;
 ///
 /// Default breakpoints are defined in [kSmallBP], [kMediumBP] and [kLargeBP].
 /// {@endtemplate}
+@immutable
 class HydraBehaviour {
   /// {@macro hydra_behaviour}
   const HydraBehaviour({
@@ -164,4 +166,23 @@ class HydraBehaviour {
 
   /// Whether to prefer smaller screen alternatives when no exact match exists.
   final bool isSmallerScreenPreferred;
+
+  @override
+  bool operator ==(Object other) {
+    return other is HydraBehaviour &&
+        other.breakpointSmall == breakpointSmall &&
+        other.breakpointMedium == breakpointMedium &&
+        other.breakpointLarge == breakpointLarge &&
+        other.isOrientationAware == isOrientationAware &&
+        other.isSmallerScreenPreferred == isSmallerScreenPreferred;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        breakpointSmall,
+        breakpointMedium,
+        breakpointLarge,
+        isOrientationAware,
+        isSmallerScreenPreferred,
+      );
 }

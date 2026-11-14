@@ -4,6 +4,7 @@ import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_head.dart';
 import 'package:hydra/src/hydra_no_widget_exception.dart';
 import 'package:hydra/src/hydra_resolver.dart';
+import 'package:hydra/src/hydra_scope.dart';
 
 /// [HydraWidget] is a [StatelessWidget] that selects which widget to display
 /// based on the current screen size and [behaviour] configuration.
@@ -16,7 +17,7 @@ class HydraWidget extends StatelessWidget {
   /// At least one of [mini], [small], [medium], or [large] must be provided.
   HydraWidget({
     super.key,
-    this.behaviour = const HydraBehaviour(),
+    this.behaviour,
     Widget? mini,
     Widget? small,
     Widget? medium,
@@ -26,11 +27,13 @@ class HydraWidget extends StatelessWidget {
           small: small,
           medium: medium,
           large: large,
-          preferSmaller: behaviour.isSmallerScreenPreferred,
+          preferSmaller: behaviour?.isSmallerScreenPreferred ?? false,
         );
 
   /// {@macro hydra_behaviour}
-  final HydraBehaviour behaviour;
+  ///
+  /// When `null`, the behaviour of the nearest [HydraScope] is used.
+  final HydraBehaviour? behaviour;
 
   /// The resolved list of widget alternatives, ordered by preference.
   final List<HydraHead> widgets;
@@ -58,34 +61,40 @@ class HydraWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = comparableWidth(MediaQuery.sizeOf(context));
-    return nearestWidget(width).widget;
+    final resolver = HydraResolver(
+      behaviour: behaviour ?? HydraScope.of(context),
+    );
+    final width = resolver.comparableWidth(MediaQuery.sizeOf(context));
+    return _nearest(resolver, width).widget;
   }
 
   /// Returns the comparable width based on orientation awareness.
-  double comparableWidth(Size size) {
-    return HydraResolver(behaviour: behaviour).comparableWidth(size);
-  }
+  ///
+  /// Uses the local [behaviour] only; a `HydraScope` is not consulted.
+  double comparableWidth(Size size) => _localResolver.comparableWidth(size);
 
   /// Finds the best matching [HydraHead] for the given [comparable] width.
+  ///
+  /// Uses the local [behaviour] only; a `HydraScope` is not consulted.
   HydraHead nearestWidget(double comparable) {
-    final resolver = HydraResolver(behaviour: behaviour);
-    final effectiveBreakpoint = resolver.resolveBreakpoint(comparable);
-
-    return widgets.firstWhere(
-      (element) => element.breakpoint == effectiveBreakpoint,
-      orElse: () => _closestAlternative(effectiveBreakpoint),
-    );
+    return _nearest(_localResolver, comparable);
   }
 
-  /// Finds the widget with the shortest distance to [target] breakpoint.
-  HydraHead _closestAlternative(Breakpoint target) {
-    return widgets.reduce((a, b) {
-      final distA = (target.index - a.breakpoint.index).abs();
-      final distB = (target.index - b.breakpoint.index).abs();
-      // When equidistant, prefer the earlier element in [widgets],
-      // which respects the preferSmaller ordering set in [_buildWidgetList].
-      return distA <= distB ? a : b;
-    });
+  HydraResolver get _localResolver {
+    return HydraResolver(behaviour: behaviour ?? const HydraBehaviour());
+  }
+
+  HydraHead _nearest(HydraResolver resolver, double comparable) {
+    HydraHead? at(Breakpoint breakpoint) {
+      return widgets.where((head) => head.breakpoint == breakpoint).firstOrNull;
+    }
+
+    return resolver.resolveValue<HydraHead>(
+      comparable,
+      mini: at(Breakpoint.mini),
+      small: at(Breakpoint.small),
+      medium: at(Breakpoint.medium),
+      large: at(Breakpoint.large),
+    );
   }
 }

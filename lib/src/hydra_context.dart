@@ -6,6 +6,8 @@ import 'package:hydra/src/hydra_value.dart';
 extension HydraContext on BuildContext {
   /// Resolves a responsive value based on the current screen breakpoint.
   ///
+  /// Without a [behaviour], the one of the nearest `HydraScope` is used.
+  ///
   /// ```dart
   /// final padding = context.hydra<double>(mini: 8, large: 32);
   /// ```
@@ -14,7 +16,7 @@ extension HydraContext on BuildContext {
     T? small,
     T? medium,
     T? large,
-    HydraBehaviour behaviour = const HydraBehaviour(),
+    HydraBehaviour? behaviour,
   }) {
     return HydraValue<T>(
       mini: mini,
