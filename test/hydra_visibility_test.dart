@@ -120,6 +120,59 @@ void main() {
       );
     });
 
+    testWidgets('animates the child out with a transition', (tester) async {
+      Widget host(double width) {
+        return MediaQuery(
+          data: MediaQueryData(size: Size(width, 800)),
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: HydraVisibility(
+              visibleUntil: Breakpoint.small,
+              transition: HydraTransition.size(axis: Axis.vertical),
+              replacement: Text('replacement'),
+              child: Text('child'),
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(host(300));
+      expect(find.text('child'), findsOneWidget);
+
+      await tester.pumpWidget(host(1000));
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(find.text('child'), findsOneWidget);
+      expect(find.text('replacement'), findsOneWidget);
+
+      await tester.pumpAndSettle();
+      expect(find.text('child'), findsNothing);
+      expect(find.text('replacement'), findsOneWidget);
+    });
+
+    testWidgets('does not animate while the visibility stays the same', (
+      tester,
+    ) async {
+      Widget host(double width) {
+        return MediaQuery(
+          data: MediaQueryData(size: Size(width, 800)),
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: HydraVisibility(
+              visibleUntil: Breakpoint.small,
+              transition: HydraTransition.fade(),
+              child: Text('child'),
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(host(300));
+      await tester.pumpWidget(host(700));
+
+      expect(tester.hasRunningAnimations, isFalse);
+      expect(find.text('child'), findsOneWidget);
+    });
+
     testWidgets('respects its behaviour', (tester) async {
       expect(
         await _visibleAt(

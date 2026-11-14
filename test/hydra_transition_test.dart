@@ -147,6 +147,25 @@ void main() {
       await tester.pumpAndSettle();
     });
 
+    for (final axis in Axis.values) {
+      testWidgets('size collapses along the $axis axis', (tester) async {
+        final transition = HydraTransition.size(axis: axis);
+
+        await tester.pumpWidget(_host(300, transition));
+        await tester.pumpWidget(_host(1400, transition));
+        await tester.pump(const Duration(milliseconds: 150));
+
+        final sizes = tester.widgetList<SizeTransition>(
+          find.byType(SizeTransition),
+        );
+        expect(sizes, hasLength(2));
+        expect(sizes.map((size) => size.axis), everyElement(axis));
+
+        await tester.pumpAndSettle();
+        expect(find.text('mini'), findsNothing);
+      });
+    }
+
     testWidgets('uses a custom builder', (tester) async {
       final transition = HydraTransition(
         builder: (child, animation) {

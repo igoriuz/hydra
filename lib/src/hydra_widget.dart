@@ -72,25 +72,7 @@ class HydraWidget extends StatelessWidget {
     final transition = this.transition;
     if (transition == null) return head.widget;
 
-    return AnimatedSwitcher(
-      duration: transition.duration,
-      switchInCurve: transition.curve,
-      switchOutCurve: transition.curve,
-      transitionBuilder: transition.builder,
-      layoutBuilder: (currentChild, previousChildren) {
-        return Stack(
-          alignment: transition.alignment,
-          children: [
-            ...previousChildren,
-            if (currentChild != null) currentChild,
-          ],
-        );
-      },
-      child: KeyedSubtree(
-        key: ValueKey(head.breakpoint),
-        child: head.widget,
-      ),
-    );
+    return transition.animate(state: head.breakpoint, child: head.widget);
   }
 
   /// Returns the comparable width based on orientation awareness.
