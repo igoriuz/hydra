@@ -29,14 +29,14 @@ void main() {
       });
 
       test('asserts when breakpointSmall >= breakpointMedium', () {
-          // ignore: prefer_const_constructors, non-const needed for coverage
+        expect(
           () => HydraBehaviour(breakpointSmall: 900),
           throwsA(isA<AssertionError>()),
         );
       });
 
       test('asserts when breakpointMedium >= breakpointLarge', () {
-          // ignore: prefer_const_constructors, non-const needed for coverage
+        expect(
           () => HydraBehaviour(breakpointMedium: 1200),
           throwsA(isA<AssertionError>()),
         );
