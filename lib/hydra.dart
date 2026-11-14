@@ -11,4 +11,5 @@ export 'package:hydra/src/hydra_no_widget_exception.dart';
 export 'package:hydra/src/hydra_resolver.dart';
 export 'package:hydra/src/hydra_scope.dart';
 export 'package:hydra/src/hydra_value.dart';
+export 'package:hydra/src/hydra_visibility.dart';
 export 'package:hydra/src/hydra_widget.dart';
