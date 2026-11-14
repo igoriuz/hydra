@@ -211,7 +211,7 @@ Every Hydra widget and value accepts a `behaviour`.
 | `HydraBehaviour.material()` | 600 / 840 / 1200 | [Material Design 3](https://m3.material.io/foundations/layout/applying-layout) |
 | `HydraBehaviour.bootstrap()` | 576 / 768 / 992 | [Bootstrap 5](https://getbootstrap.com/docs/5.3/layout/breakpoints/) `sm` / `md` / `lg` |
 | `HydraBehaviour.tailwind()` | 640 / 768 / 1024 | [Tailwind CSS](https://tailwindcss.com/docs/responsive-design) `sm` / `md` / `lg` |
-| `HydraBehaviour.cupertino()` | 428 / 768 / 1024 | Apple device widths: largest iPhone, iPad portrait, iPad landscape |
+| `HydraBehaviour.cupertino()` | 428 / 768 / 1024 | Apple device widths: iPhone Pro Max (428), iPad portrait, iPad landscape |
 
 ### Options
 

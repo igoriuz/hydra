@@ -136,7 +136,7 @@ class HydraBehaviour {
   /// Breakpoints derived from Apple device widths in points.
   ///
   /// Apple publishes no breakpoint system; these values follow common
-  /// device widths: 428 (largest iPhone in portrait), 768 (iPad in
+  /// device widths: 428 (iPhone 12-14 Pro Max in portrait), 768 (iPad in
   /// portrait) and 1024 (iPad in landscape).
   ///
   /// - mini: < 428

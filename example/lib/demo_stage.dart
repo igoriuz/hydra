@@ -73,6 +73,7 @@ class DemoStage extends StatelessWidget {
                 child: _Segment(
                   breakpoint: breakpoint,
                   start: starts[breakpoint.index],
+                  end: starts[breakpoint.index + 1],
                   active: breakpoint == current,
                 ),
               ),
@@ -84,7 +85,6 @@ class DemoStage extends StatelessWidget {
                 appHeight: _appHeight,
                 scale: _scale,
                 chromeHeight: _chromeHeight,
-                accent: accent,
               ),
             ),
           ],
@@ -166,11 +166,13 @@ class _Segment extends StatelessWidget {
   const _Segment({
     required this.breakpoint,
     required this.start,
+    required this.end,
     required this.active,
   });
 
   final Breakpoint breakpoint;
   final double start;
+  final double end;
   final bool active;
 
   @override
@@ -201,7 +203,7 @@ class _Segment extends StatelessWidget {
           child: Text(breakpoint.name),
         ),
         Text(
-          start > 0 ? '≥ ${start.round()} px' : '< 600 px',
+          start > 0 ? '≥ ${start.round()} px' : '< ${end.round()} px',
           style: const TextStyle(fontSize: 14, color: Color(0xFF5E8296)),
         ),
       ],
@@ -215,14 +217,12 @@ class _Window extends StatelessWidget {
     required this.appHeight,
     required this.scale,
     required this.chromeHeight,
-    required this.accent,
   });
 
   final double width;
   final double appHeight;
   final double scale;
   final double chromeHeight;
-  final Color accent;
 
   @override
   Widget build(BuildContext context) {
