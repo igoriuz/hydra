@@ -40,9 +40,11 @@ double _widthAt(double seconds) {
 }
 
 Future<void> _loadFonts() async {
-  final fonts = Directory(
-    '${Platform.environment['FLUTTER_ROOT']}/bin/cache/artifacts/material_fonts',
-  );
+  final flutterRoot = Platform.environment['FLUTTER_ROOT'];
+  if (flutterRoot == null) {
+    throw StateError('FLUTTER_ROOT is not set; run this via `flutter test`.');
+  }
+  final fonts = Directory('$flutterRoot/bin/cache/artifacts/material_fonts');
   Future<ByteData> read(String name) async {
     final bytes = await File('${fonts.path}/$name').readAsBytes();
     return ByteData.sublistView(bytes);
