@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_head.dart';
 import 'package:hydra/src/hydra_no_widget_exception.dart';
