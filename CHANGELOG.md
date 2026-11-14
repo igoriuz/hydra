@@ -1,3 +1,16 @@
+# 1.3.0
+
+* Added `HydraScope` to configure the behaviour once for a whole subtree
+* Added `HydraBuilder` to build one widget tree from the current breakpoint
+* Added `Breakpoint.current(context)` for direct access to the active breakpoint
+* Added `HydraVisibility` to show a widget only within a range of breakpoints
+* Added `HydraGrid`, a grid with a column count per breakpoint
+* Added `HydraTransition` and the `transition` parameter of `HydraWidget` for animated breakpoint changes
+* Added `HydraBehaviour.bootstrap()`, `HydraBehaviour.tailwind()` and `HydraBehaviour.cupertino()` presets
+* `HydraBehaviour` now has value equality
+* `behaviour` of `HydraWidget`, `HydraValue` and `context.hydra<T>()` is now optional and falls back to the nearest `HydraScope`; the `behaviour` fields are nullable as a result
+* New showcase example app and README animation
+
 # 1.2.0
 
 * Added `HydraValue<T>` for responsive values without widgets
