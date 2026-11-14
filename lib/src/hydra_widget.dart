@@ -68,11 +68,8 @@ class HydraWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolver = HydraResolver(
-      behaviour: behaviour ?? HydraScope.of(context),
-    );
-    final width = resolver.comparableWidth(MediaQuery.sizeOf(context));
-    final head = _nearest(resolver, width);
+    final resolver = HydraResolver.of(context, behaviour: behaviour);
+    final head = _nearest(resolver, resolver.widthOf(context));
 
     final transition = this.transition;
     if (transition == null) return head.widget;

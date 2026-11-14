@@ -1,8 +1,8 @@
-import 'dart:ui';
-
+import 'package:flutter/widgets.dart';
 import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_no_value_exception.dart';
+import 'package:hydra/src/hydra_scope.dart';
 
 /// Shared breakpoint resolution logic used by both `HydraWidget` and
 /// `HydraValue`.
@@ -10,8 +10,19 @@ class HydraResolver {
   /// Creates a [HydraResolver] with the given [behaviour].
   const HydraResolver({this.behaviour = const HydraBehaviour()});
 
+  /// Creates a [HydraResolver] for [context]: with [behaviour] when given,
+  /// otherwise with the behaviour of the nearest [HydraScope].
+  factory HydraResolver.of(BuildContext context, {HydraBehaviour? behaviour}) {
+    return HydraResolver(behaviour: behaviour ?? HydraScope.of(context));
+  }
+
   /// The behaviour configuration for breakpoint resolution.
   final HydraBehaviour behaviour;
+
+  /// Returns the [comparableWidth] of the screen of [context].
+  double widthOf(BuildContext context) {
+    return comparableWidth(MediaQuery.sizeOf(context));
+  }
 
   /// Returns `size.width` when orientation-aware, or `size.shortestSide`
   /// when not.
