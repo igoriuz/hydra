@@ -149,18 +149,88 @@ void main() {
       expect(find.text('b small'), findsOneWidget);
     });
 
-    testWidgets('a nested MediaQuery wins over the breakpoint of the scope', (
-      tester,
-    ) async {
+    testWidgets(
+        'keeps rebuilds per breakpoint below a Scaffold-like '
+        'MediaQuery', (tester) async {
+      var builds = 0;
+      final size = ValueNotifier(const Size(300, 800));
+      addTearDown(size.dispose);
+      final body = Directionality(
+        textDirection: TextDirection.ltr,
+        child: Builder(
+          builder: (context) {
+            builds++;
+            return Text(Breakpoint.current(context).name);
+          },
+        ),
+      );
+
       await tester.pumpWidget(
-        HydraScope(
-          behaviour: _scoped,
-          child: _host(
-            HydraWidget(mini: const Text('mini'), small: const Text('small')),
+        ValueListenableBuilder(
+          valueListenable: size,
+          builder: (context, value, child) {
+            return MediaQuery(data: MediaQueryData(size: value), child: child!);
+          },
+          child: HydraScope(
+            behaviour: const HydraBehaviour(),
+            // Scaffold wraps its body like this.
+            child: Builder(
+              builder: (context) {
+                return MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  // A constant child, like the body a Scaffold is given:
+                  // only its own dependencies can rebuild it.
+                  child: body,
+                );
+              },
+            ),
           ),
         ),
       );
 
+      size.value = const Size(500, 800);
+      await tester.pump();
+      expect(builds, 1);
+
+      size.value = const Size(700, 800);
+      await tester.pump();
+      expect(builds, 2);
+      expect(find.text('small'), findsOneWidget);
+    });
+
+    testWidgets('resolves the breakpoint where the scope is', (tester) async {
+      Widget tree({required bool innerScope}) {
+        final widget = HydraWidget(
+          mini: const Text('mini'),
+          large: const Text('large'),
+        );
+        return MediaQuery(
+          data: const MediaQueryData(size: Size(1400, 800)),
+          child: HydraScope(
+            behaviour: const HydraBehaviour(),
+            child: MediaQuery(
+              data: const MediaQueryData(size: Size(300, 800)),
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: innerScope
+                    ? HydraScope(
+                        behaviour: const HydraBehaviour(),
+                        child: widget,
+                      )
+                    : widget,
+              ),
+            ),
+          ),
+        );
+      }
+
+      // The outer scope saw 1400 px; the narrower MediaQuery below it only
+      // counts once it gets a scope of its own.
+      await tester.pumpWidget(tree(innerScope: false));
+      expect(find.text('large'), findsOneWidget);
+
+      await tester.pumpWidget(tree(innerScope: true));
       expect(find.text('mini'), findsOneWidget);
     });
   });

@@ -239,14 +239,12 @@ By default, Hydra uses `MediaQuery.sizeOf(context).width` which changes when the
 
 ## Configure Once With HydraScope
 
-Instead of passing the same `behaviour` everywhere, put a `HydraScope` into your app:
+Instead of passing the same `behaviour` everywhere, put a `HydraScope` above your app:
 
 ```dart
-MaterialApp(
-  builder: (context, child) => HydraScope(
-    behaviour: const HydraBehaviour.material(),
-    child: child!,
-  ),
+HydraScope(
+  behaviour: const HydraBehaviour.material(),
+  child: MaterialApp(...),
 )
 ```
 
@@ -256,7 +254,7 @@ Everything below it - `HydraWidget`, `HydraValue`, `context.hydra`, `HydraBuilde
 
 Hydra reads the screen size with `MediaQuery.sizeOf`, so it ignores unrelated changes such as the keyboard or text scaling. Two things keep rebuilds down while a window is resized:
 
-- **Use a `HydraScope`.** It resolves the breakpoint once, and everything below it rebuilds only when the breakpoint changes instead of on every pixel. This needs the scope and its descendants to share one `MediaQuery`, which is why the example above puts it into `MaterialApp.builder` rather than around the app. A `HydraScope` around `MaterialApp` still provides the behaviour, just not this shortcut.
+- **Use a `HydraScope`.** It resolves the breakpoint once, from the screen size at its place in the tree, and everything below it rebuilds only when the breakpoint changes instead of on every pixel. A `MediaQuery` with a different size below the scope, like a preview frame or a split view, needs a `HydraScope` of its own.
 - **`HydraBuilder` rebuilds per breakpoint.** Its builder only runs again when the breakpoint changes, with or without a scope.
 
 For long lists, `HydraGrid.builder` builds its children on demand:
