@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_no_value_exception.dart';
 import 'package:hydra/src/hydra_resolver.dart';
@@ -49,8 +50,8 @@ class HydraValue<T> {
   /// Resolves the value for the current screen size.
   T resolve(BuildContext context) {
     final resolver = HydraResolver.of(context, behaviour: behaviour);
-    return resolver.resolveValue<T>(
-      resolver.widthOf(context),
+    return resolver.resolveValueAt<T>(
+      Breakpoint.current(context, behaviour: behaviour),
       mini: mini,
       small: small,
       medium: medium,

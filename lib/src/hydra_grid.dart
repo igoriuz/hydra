@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_resolver.dart';
 import 'package:hydra/src/hydra_scope.dart';
@@ -84,8 +85,8 @@ class HydraGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolver = HydraResolver.of(context, behaviour: behaviour);
-    final columns = resolver.resolveValue<int>(
-      resolver.widthOf(context),
+    final columns = resolver.resolveValueAt<int>(
+      Breakpoint.current(context, behaviour: behaviour),
       mini: mini,
       small: small,
       medium: medium,

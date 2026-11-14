@@ -108,24 +108,60 @@ void main() {
       expect(find.text('small'), findsOneWidget);
     });
 
-    test('notifies only when the behaviour differs', () {
-      const scope = HydraScope(behaviour: _scoped, child: SizedBox());
+    testWidgets('dependents rebuild only when the breakpoint changes', (
+      tester,
+    ) async {
+      var builds = 0;
+      final size = ValueNotifier(const Size(300, 800));
+      addTearDown(size.dispose);
 
-      expect(
-        scope.updateShouldNotify(
-          const HydraScope(
-            behaviour: HydraBehaviour(breakpointSmall: 800),
-            child: SizedBox(),
+      await tester.pumpWidget(
+        ValueListenableBuilder(
+          valueListenable: size,
+          builder: (context, value, child) {
+            return MediaQuery(data: MediaQueryData(size: value), child: child!);
+          },
+          child: HydraScope(
+            behaviour: const HydraBehaviour(),
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Builder(
+                builder: (context) {
+                  builds++;
+                  final value = context.hydra<String>(mini: 'a', small: 'b');
+                  return Text('$value ${Breakpoint.current(context).name}');
+                },
+              ),
+            ),
           ),
         ),
-        isFalse,
       );
-      expect(
-        scope.updateShouldNotify(
-          const HydraScope(behaviour: HydraBehaviour(), child: SizedBox()),
+      expect(builds, 1);
+
+      // Still mini: nothing below the scope may rebuild.
+      size.value = const Size(500, 800);
+      await tester.pump();
+      expect(builds, 1);
+
+      size.value = const Size(700, 800);
+      await tester.pump();
+      expect(builds, 2);
+      expect(find.text('b small'), findsOneWidget);
+    });
+
+    testWidgets('a nested MediaQuery wins over the breakpoint of the scope', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        HydraScope(
+          behaviour: _scoped,
+          child: _host(
+            HydraWidget(mini: const Text('mini'), small: const Text('small')),
+          ),
         ),
-        isTrue,
       );
+
+      expect(find.text('mini'), findsOneWidget);
     });
   });
 
