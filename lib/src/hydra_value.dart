@@ -48,12 +48,9 @@ class HydraValue<T> {
 
   /// Resolves the value for the current screen size.
   T resolve(BuildContext context) {
-    final resolver = HydraResolver(
-      behaviour: behaviour ?? HydraScope.of(context),
-    );
-    final width = resolver.comparableWidth(MediaQuery.sizeOf(context));
+    final resolver = HydraResolver.of(context, behaviour: behaviour);
     return resolver.resolveValue<T>(
-      width,
+      resolver.widthOf(context),
       mini: mini,
       small: small,
       medium: medium,

@@ -40,11 +40,7 @@ enum Breakpoint {
   /// }
   /// ```
   static Breakpoint current(BuildContext context, {HydraBehaviour? behaviour}) {
-    final resolver = HydraResolver(
-      behaviour: behaviour ?? HydraScope.of(context),
-    );
-    return resolver.resolveBreakpoint(
-      resolver.comparableWidth(MediaQuery.sizeOf(context)),
-    );
+    final resolver = HydraResolver.of(context, behaviour: behaviour);
+    return resolver.resolveBreakpoint(resolver.widthOf(context));
   }
 }

@@ -56,36 +56,32 @@ class HydraBehaviour {
 
   /// Default behaviour except [isSmallerScreenPreferred] is set to `true`.
   const HydraBehaviour.preferSmaller({
-    this.breakpointSmall = kSmallBP,
-    this.breakpointMedium = kMediumBP,
-    this.breakpointLarge = kLargeBP,
-    this.isOrientationAware = true,
-  })  : isSmallerScreenPreferred = true,
-        assert(
-          breakpointSmall < breakpointMedium,
-          'breakpointSmall must be less than breakpointMedium',
-        ),
-        assert(
-          breakpointMedium < breakpointLarge,
-          'breakpointMedium must be less than breakpointLarge',
+    double breakpointSmall = kSmallBP,
+    double breakpointMedium = kMediumBP,
+    double breakpointLarge = kLargeBP,
+    bool isOrientationAware = true,
+  }) : this(
+          breakpointSmall: breakpointSmall,
+          breakpointMedium: breakpointMedium,
+          breakpointLarge: breakpointLarge,
+          isOrientationAware: isOrientationAware,
+          isSmallerScreenPreferred: true,
         );
 
   /// Default behaviour except that the shortest side will be used. This means
   /// that even when the device is rotated, `HydraWidget` won't choose a
   /// different screen alternative.
   const HydraBehaviour.noOrientation({
-    this.breakpointSmall = kSmallBP,
-    this.breakpointMedium = kMediumBP,
-    this.breakpointLarge = kLargeBP,
-    this.isSmallerScreenPreferred = false,
-  })  : isOrientationAware = false,
-        assert(
-          breakpointSmall < breakpointMedium,
-          'breakpointSmall must be less than breakpointMedium',
-        ),
-        assert(
-          breakpointMedium < breakpointLarge,
-          'breakpointMedium must be less than breakpointLarge',
+    double breakpointSmall = kSmallBP,
+    double breakpointMedium = kMediumBP,
+    double breakpointLarge = kLargeBP,
+    bool isSmallerScreenPreferred = false,
+  }) : this(
+          breakpointSmall: breakpointSmall,
+          breakpointMedium: breakpointMedium,
+          breakpointLarge: breakpointLarge,
+          isSmallerScreenPreferred: isSmallerScreenPreferred,
+          isOrientationAware: false,
         );
 
   /// Breakpoints based on Material Design layout guidelines.
@@ -97,11 +93,15 @@ class HydraBehaviour {
   ///
   /// See: https://m3.material.io/foundations/layout/applying-layout
   const HydraBehaviour.material({
-    this.isOrientationAware = true,
-    this.isSmallerScreenPreferred = false,
-  })  : breakpointSmall = 600,
-        breakpointMedium = 840,
-        breakpointLarge = 1200;
+    bool isOrientationAware = true,
+    bool isSmallerScreenPreferred = false,
+  }) : this(
+          breakpointSmall: 600,
+          breakpointMedium: 840,
+          breakpointLarge: 1200,
+          isOrientationAware: isOrientationAware,
+          isSmallerScreenPreferred: isSmallerScreenPreferred,
+        );
 
   /// Breakpoints based on the Bootstrap 5 grid (`sm` / `md` / `lg`).
   ///
@@ -112,11 +112,15 @@ class HydraBehaviour {
   ///
   /// See: https://getbootstrap.com/docs/5.3/layout/breakpoints/
   const HydraBehaviour.bootstrap({
-    this.isOrientationAware = true,
-    this.isSmallerScreenPreferred = false,
-  })  : breakpointSmall = 576,
-        breakpointMedium = 768,
-        breakpointLarge = 992;
+    bool isOrientationAware = true,
+    bool isSmallerScreenPreferred = false,
+  }) : this(
+          breakpointSmall: 576,
+          breakpointMedium: 768,
+          breakpointLarge: 992,
+          isOrientationAware: isOrientationAware,
+          isSmallerScreenPreferred: isSmallerScreenPreferred,
+        );
 
   /// Breakpoints based on the Tailwind CSS defaults (`sm` / `md` / `lg`).
   ///
@@ -127,11 +131,15 @@ class HydraBehaviour {
   ///
   /// See: https://tailwindcss.com/docs/responsive-design
   const HydraBehaviour.tailwind({
-    this.isOrientationAware = true,
-    this.isSmallerScreenPreferred = false,
-  })  : breakpointSmall = 640,
-        breakpointMedium = 768,
-        breakpointLarge = 1024;
+    bool isOrientationAware = true,
+    bool isSmallerScreenPreferred = false,
+  }) : this(
+          breakpointSmall: 640,
+          breakpointMedium: 768,
+          breakpointLarge: 1024,
+          isOrientationAware: isOrientationAware,
+          isSmallerScreenPreferred: isSmallerScreenPreferred,
+        );
 
   /// Breakpoints derived from Apple device widths in points.
   ///
@@ -146,11 +154,15 @@ class HydraBehaviour {
   ///
   /// See: https://developer.apple.com/design/human-interface-guidelines/layout
   const HydraBehaviour.cupertino({
-    this.isOrientationAware = true,
-    this.isSmallerScreenPreferred = false,
-  })  : breakpointSmall = 428,
-        breakpointMedium = 768,
-        breakpointLarge = 1024;
+    bool isOrientationAware = true,
+    bool isSmallerScreenPreferred = false,
+  }) : this(
+          breakpointSmall: 428,
+          breakpointMedium: 768,
+          breakpointLarge: 1024,
+          isOrientationAware: isOrientationAware,
+          isSmallerScreenPreferred: isSmallerScreenPreferred,
+        );
 
   /// Breakpoint threshold between [Breakpoint.mini] and [Breakpoint.small].
   final double breakpointSmall;

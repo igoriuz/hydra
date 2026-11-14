@@ -83,11 +83,9 @@ class HydraGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolver = HydraResolver(
-      behaviour: behaviour ?? HydraScope.of(context),
-    );
+    final resolver = HydraResolver.of(context, behaviour: behaviour);
     final columns = resolver.resolveValue<int>(
-      resolver.comparableWidth(MediaQuery.sizeOf(context)),
+      resolver.widthOf(context),
       mini: mini,
       small: small,
       medium: medium,

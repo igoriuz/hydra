@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_head.dart';
 import 'package:hydra/src/hydra_no_widget_exception.dart';
@@ -20,17 +19,15 @@ class HydraWidget extends StatelessWidget {
     super.key,
     this.behaviour,
     this.transition,
-    Widget? mini,
-    Widget? small,
-    Widget? medium,
-    Widget? large,
-  }) : widgets = _buildWidgetList(
-          mini: mini,
-          small: small,
-          medium: medium,
-          large: large,
-          preferSmaller: behaviour?.isSmallerScreenPreferred ?? false,
-        );
+    this.mini,
+    this.small,
+    this.medium,
+    this.large,
+  }) {
+    if (mini == null && small == null && medium == null && large == null) {
+      throw const HydraNoWidgetException('At least one widget is needed');
+    }
+  }
 
   /// {@macro hydra_behaviour}
   ///
@@ -42,37 +39,35 @@ class HydraWidget extends StatelessWidget {
   /// When `null`, the widget is swapped instantly.
   final HydraTransition? transition;
 
-  /// The resolved list of widget alternatives, ordered by preference.
-  final List<HydraHead> widgets;
+  /// Widget for the mini breakpoint.
+  final Widget? mini;
 
-  static List<HydraHead> _buildWidgetList({
-    required Widget? mini,
-    required Widget? small,
-    required Widget? medium,
-    required Widget? large,
-    required bool preferSmaller,
-  }) {
-    final heads = <HydraHead>[
-      if (large != null) HydraHead.large(large),
-      if (medium != null) HydraHead.medium(medium),
-      if (small != null) HydraHead.small(small),
-      if (mini != null) HydraHead.mini(mini),
-    ];
+  /// Widget for the small breakpoint.
+  final Widget? small;
 
-    if (heads.isEmpty) {
-      throw const HydraNoWidgetException('At least one widget is needed');
-    }
+  /// Widget for the medium breakpoint.
+  final Widget? medium;
 
+  /// Widget for the large breakpoint.
+  final Widget? large;
+
+  /// The given widget alternatives, biggest breakpoint first - or smallest
+  /// first when the local [behaviour] prefers smaller screens.
+  List<HydraHead> get widgets {
+    final heads = [_large, _medium, _small, _mini].nonNulls.toList();
+    final preferSmaller = behaviour?.isSmallerScreenPreferred ?? false;
     return preferSmaller ? heads.reversed.toList() : heads;
   }
 
+  HydraHead? get _mini => mini == null ? null : HydraHead.mini(mini!);
+  HydraHead? get _small => small == null ? null : HydraHead.small(small!);
+  HydraHead? get _medium => medium == null ? null : HydraHead.medium(medium!);
+  HydraHead? get _large => large == null ? null : HydraHead.large(large!);
+
   @override
   Widget build(BuildContext context) {
-    final resolver = HydraResolver(
-      behaviour: behaviour ?? HydraScope.of(context),
-    );
-    final width = resolver.comparableWidth(MediaQuery.sizeOf(context));
-    final head = _nearest(resolver, width);
+    final resolver = HydraResolver.of(context, behaviour: behaviour);
+    final head = _nearest(resolver, resolver.widthOf(context));
 
     final transition = this.transition;
     if (transition == null) return head.widget;
@@ -82,6 +77,15 @@ class HydraWidget extends StatelessWidget {
       switchInCurve: transition.curve,
       switchOutCurve: transition.curve,
       transitionBuilder: transition.builder,
+      layoutBuilder: (currentChild, previousChildren) {
+        return Stack(
+          alignment: transition.alignment,
+          children: [
+            ...previousChildren,
+            if (currentChild != null) currentChild,
+          ],
+        );
+      },
       child: KeyedSubtree(
         key: ValueKey(head.breakpoint),
         child: head.widget,
@@ -106,16 +110,12 @@ class HydraWidget extends StatelessWidget {
   }
 
   HydraHead _nearest(HydraResolver resolver, double comparable) {
-    HydraHead? at(Breakpoint breakpoint) {
-      return widgets.where((head) => head.breakpoint == breakpoint).firstOrNull;
-    }
-
     return resolver.resolveValue<HydraHead>(
       comparable,
-      mini: at(Breakpoint.mini),
-      small: at(Breakpoint.small),
-      medium: at(Breakpoint.medium),
-      large: at(Breakpoint.large),
+      mini: _mini,
+      small: _small,
+      medium: _medium,
+      large: _large,
     );
   }
 }
