@@ -1,5 +1,7 @@
-# 1.3.0
+# 2.0.0
 
+* **Breaking:** `behaviour` of `HydraWidget`, `HydraValue` and `context.hydra<T>()` is now optional and falls back to the nearest `HydraScope`. The `behaviour` fields are nullable as a result - code reading e.g. `widget.behaviour.breakpointSmall` needs a null check
+* **Breaking:** `HydraWidget.widgets` is now a getter; the alternatives are available as `mini`, `small`, `medium` and `large`
 * Added `HydraScope` to configure the behaviour once for a whole subtree
 * Added `HydraBuilder` to build one widget tree from the current breakpoint
 * Added `Breakpoint.current(context)` for direct access to the active breakpoint
@@ -8,9 +10,7 @@
 * Added `HydraTransition` and the `transition` parameter of `HydraWidget` for animated breakpoint changes
 * Added `HydraBehaviour.bootstrap()`, `HydraBehaviour.tailwind()` and `HydraBehaviour.cupertino()` presets
 * `HydraBehaviour` now has value equality
-* **Breaking (source):** `behaviour` of `HydraWidget`, `HydraValue` and `context.hydra<T>()` is now optional and falls back to the nearest `HydraScope`. The `behaviour` fields are nullable as a result - code reading e.g. `widget.behaviour.breakpointSmall` needs a null check
 * `HydraTransition` takes an `alignment` for variants of different size
-* `HydraWidget` exposes `mini`, `small`, `medium` and `large`; `widgets` is now a getter
 * `HydraResolver.of(context)` resolves the scoped behaviour; `resolveValue` throws `HydraNoValueException` without any value
 * New showcase example app and README animation
 
