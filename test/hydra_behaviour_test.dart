@@ -132,5 +132,32 @@ void main() {
         expect(behaviour.isSmallerScreenPreferred, isTrue);
       });
     });
+    for (final (name, create, small, medium, large) in [
+      ('bootstrap', HydraBehaviour.bootstrap, 576.0, 768.0, 992.0),
+      ('tailwind', HydraBehaviour.tailwind, 640.0, 768.0, 1024.0),
+      ('cupertino', HydraBehaviour.cupertino, 428.0, 768.0, 1024.0),
+    ]) {
+      group(name, () {
+        test('uses its breakpoints', () {
+          final behaviour = create();
+
+          expect(behaviour.breakpointSmall, small);
+          expect(behaviour.breakpointMedium, medium);
+          expect(behaviour.breakpointLarge, large);
+          expect(behaviour.isOrientationAware, isTrue);
+          expect(behaviour.isSmallerScreenPreferred, isFalse);
+        });
+
+        test('accepts custom flags', () {
+          final behaviour = create(
+            isOrientationAware: false,
+            isSmallerScreenPreferred: true,
+          );
+
+          expect(behaviour.isOrientationAware, isFalse);
+          expect(behaviour.isSmallerScreenPreferred, isTrue);
+        });
+      });
+    }
   });
 }
