@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_no_value_exception.dart';
 import 'package:hydra/src/hydra_resolver.dart';
+import 'package:hydra/src/hydra_scope.dart';
 
 /// [HydraValue] resolves a value of type [T] based on the current screen
 /// breakpoint, using the same logic as `HydraWidget`.
@@ -21,7 +22,7 @@ class HydraValue<T> {
     this.small,
     this.medium,
     this.large,
-    this.behaviour = const HydraBehaviour(),
+    this.behaviour,
   }) {
     if (mini == null && small == null && medium == null && large == null) {
       throw const HydraNoValueException('At least one value is needed');
@@ -41,11 +42,15 @@ class HydraValue<T> {
   final T? large;
 
   /// The behaviour configuration for breakpoint resolution.
-  final HydraBehaviour behaviour;
+  ///
+  /// When `null`, the behaviour of the nearest [HydraScope] is used.
+  final HydraBehaviour? behaviour;
 
   /// Resolves the value for the current screen size.
   T resolve(BuildContext context) {
-    final resolver = HydraResolver(behaviour: behaviour);
+    final resolver = HydraResolver(
+      behaviour: behaviour ?? HydraScope.of(context),
+    );
     final width = resolver.comparableWidth(MediaQuery.sizeOf(context));
     return resolver.resolveValue<T>(
       width,
