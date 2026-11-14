@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
+import 'package:hydra/src/hydra_no_value_exception.dart';
 import 'package:hydra/src/hydra_resolver.dart';
 
 void main() {
@@ -73,6 +74,13 @@ void main() {
     });
 
     group('resolveValue', () {
+      test('throws HydraNoValueException without any value', () {
+        expect(
+          () => const HydraResolver().resolveValue<int>(700),
+          throwsA(isA<HydraNoValueException>()),
+        );
+      });
+
       test('returns exact match at each breakpoint', () {
         const resolver = HydraResolver();
         expect(

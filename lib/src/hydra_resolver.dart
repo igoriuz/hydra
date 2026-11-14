@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
+import 'package:hydra/src/hydra_no_value_exception.dart';
 
 /// Shared breakpoint resolution logic used by both `HydraWidget` and
 /// `HydraValue`.
@@ -29,6 +30,8 @@ class HydraResolver {
   /// Resolves the best value from four nullable candidates for the given
   /// [width]. Uses nearest-breakpoint fallback, respecting
   /// `isSmallerScreenPreferred`.
+  ///
+  /// Throws a [HydraNoValueException] when all candidates are `null`.
   T resolveValue<T>(
     double width, {
     T? mini,
@@ -45,6 +48,9 @@ class HydraResolver {
       if (large != null) Breakpoint.large: large,
     };
 
+    if (entries.isEmpty) {
+      throw const HydraNoValueException('At least one value is needed');
+    }
     if (entries.containsKey(target)) return entries[target] as T;
 
     // Build candidate list ordered by preference
