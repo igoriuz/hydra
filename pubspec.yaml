@@ -1,14 +1,21 @@
 name: hydra
-description: Flutter widget which helps building responsive widgets.
-version: 2.0.1
+description: Responsive and adaptive Flutter layouts with breakpoints. Swap widgets, values, grids and visibility per screen size, animated, with zero dependencies.
+version: 2.1.0
 homepage: https://github.com/igoriuz/hydra
 issue_tracker: https://github.com/igoriuz/hydra/issues
 repository: https://github.com/igoriuz/hydra
 topics:
   - responsive
-  - widget
+  - adaptive
   - breakpoint
   - layout
+  - widget
+
+screenshots:
+  - description: A layout built with Hydra at the large breakpoint, with side navigation and a four-column grid.
+    path: screenshots/large.png
+  - description: The same widget tree at the mini breakpoint, with a bottom bar and a single-column list.
+    path: screenshots/mini.png
 
 environment:
   sdk: '>=3.5.0 <4.0.0'

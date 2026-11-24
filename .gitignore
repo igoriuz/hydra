@@ -1,4 +1,6 @@
 # Miscellaneous
+coverage/
+**/ios/Flutter/ephemeral/
 *.class
 *.log
 *.pyc
