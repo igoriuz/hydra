@@ -1,0 +1,5 @@
+# Develops and tests against the hydra in this repository, not the one on
+# pub.dev. Not published (see .pubignore).
+dependency_overrides:
+  hydra:
+    path: ..

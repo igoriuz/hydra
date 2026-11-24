@@ -39,3 +39,28 @@ jobs:
 
       - name: Verify publishable
         run: flutter pub publish --dry-run
+
+  hydra-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hydra_test
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Verify publishable
+        run: flutter pub publish --dry-run

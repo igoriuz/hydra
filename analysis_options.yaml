@@ -4,3 +4,4 @@ analyzer:
   exclude:
     - example/**
     - build/**
+    - hydra_test/**
