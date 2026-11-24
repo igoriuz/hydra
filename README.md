@@ -52,7 +52,7 @@ import 'package:hydra/hydra.dart';
 | pick a value per breakpoint | [`HydraValue<T>` / `context.hydra<T>()`](#responsive-values) |
 | build one tree from the breakpoint | [`HydraBuilder` / `Breakpoint.current`](#the-current-breakpoint) |
 | show something only on some screens | [`HydraVisibility`](#visibility) |
-| change the number of grid columns | [`HydraGrid`](#grid) |
+| change the number of grid columns | [`HydraGrid` / `HydraSliverGrid`](#grid) |
 | set breakpoints once for the whole app | [`HydraScope`](#configure-once-with-hydrascope) |
 | adapt to a panel or dialog, not the screen | [`HydraLayoutScope`](#adapt-to-the-available-space) |
 
@@ -200,6 +200,19 @@ HydraGrid(
 ```
 
 `padding`, `childAspectRatio`, `shrinkWrap` and `physics` are passed through to the grid.
+
+Inside a `CustomScrollView`, use `HydraSliverGrid` with the same column counts:
+
+```dart
+CustomScrollView(
+  slivers: [
+    const SliverAppBar(title: Text('Bestiary')),
+    HydraSliverGrid(mini: 2, large: 4, children: cards),
+  ],
+)
+```
+
+Both have a `.builder` constructor that builds the children on demand.
 
 ## Breakpoints
 
