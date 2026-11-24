@@ -28,6 +28,7 @@ Hydra tames the beast. Describe what changes at up to four breakpoints and let i
 - **Responsive values** - adapt padding, font sizes, colors or any type `T`
 - **Building blocks** - visibility, grid and builder widgets for the common cases
 - **Configure once** - one `HydraScope` instead of a `behaviour` on every widget
+- **Container queries** - `HydraLayoutScope` adapts to a panel or dialog instead of the screen
 - **Smart fallbacks** - you don't need a variant for every breakpoint
 - **Cheap rebuilds** - below a `HydraScope`, widgets rebuild per breakpoint, not per pixel
 - **Zero dependencies** - only Flutter SDK, nothing else
@@ -53,6 +54,7 @@ import 'package:hydra/hydra.dart';
 | show something only on some screens | [`HydraVisibility`](#visibility) |
 | change the number of grid columns | [`HydraGrid`](#grid) |
 | set breakpoints once for the whole app | [`HydraScope`](#configure-once-with-hydrascope) |
+| adapt to a panel or dialog, not the screen | [`HydraLayoutScope`](#adapt-to-the-available-space) |
 
 ## Responsive Widgets
 
@@ -251,6 +253,23 @@ HydraScope(
 ```
 
 Everything below it - `HydraWidget`, `HydraValue`, `context.hydra`, `HydraBuilder`, `HydraVisibility`, `HydraGrid` and `Breakpoint.current` - uses the scoped behaviour. A `behaviour` passed directly still wins.
+
+## Adapt to the Available Space
+
+Breakpoints follow the screen by default. A list in a 360 px side panel would get the `large` layout on a desktop. `HydraLayoutScope` resolves the breakpoint from the space its parent gives it instead, like a container query in CSS:
+
+```dart
+Row(
+  children: [
+    const SizedBox(width: 360, child: HydraLayoutScope(child: Inbox())),
+    Expanded(child: HydraLayoutScope(child: MessageView())),
+  ],
+)
+```
+
+Everything below it - `HydraWidget`, values, `HydraGrid`, `HydraVisibility`, `HydraBuilder` and `Breakpoint.current` - adapts to that space and rebuilds only when its breakpoint changes. Without a `behaviour` it uses the one of the enclosing `HydraScope`.
+
+It needs a bounded width, so put it inside an `Expanded` or a sized box rather than directly into a `Row` or a horizontal list.
 
 ## Performance
 

@@ -3,6 +3,8 @@
 * `HydraWidget` and `HydraValue` have `const` constructors. Without any alternative they now fail an assertion in debug builds instead of throwing `HydraNoWidgetException` / `HydraNoValueException` from the constructor; in release builds resolving throws `HydraNoValueException`
 * `HydraNoWidgetException` is deprecated, as nothing throws it anymore
 * `context.hydra<T>()` without any value throws `HydraNoValueException` as before
+* Added `HydraLayoutScope` to resolve the breakpoint from the available space instead of the screen, like a CSS container query
+* `HydraScope.breakpointOf` takes an optional `behaviour`
 * `Breakpoint` compares with `<`, `<=`, `>` and `>=`
 * New pub.dev description, the `adaptive` topic and screenshots of the example app
 
