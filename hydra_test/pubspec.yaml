@@ -1,0 +1,24 @@
+name: hydra_test
+description: Test helpers for the hydra package. Run a widget test once per breakpoint, or set the test screen to a breakpoint.
+version: 0.1.0
+homepage: https://github.com/igoriuz/hydra/tree/main/hydra_test
+issue_tracker: https://github.com/igoriuz/hydra/issues
+repository: https://github.com/igoriuz/hydra
+topics:
+  - responsive
+  - testing
+  - breakpoint
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  hydra: ^2.0.0
+
+dev_dependencies:
+  very_good_analysis: ^11.0.0

@@ -304,6 +304,19 @@ HydraGrid.builder(
 
 `HydraVisibility` removes a hidden child from the tree. Set `maintainState: true` to keep it alive instead - its state survives, and it is not rebuilt from scratch when it comes back.
 
+## Testing
+
+[hydra_test](hydra_test) runs a widget test once per breakpoint:
+
+```dart
+final breakpoints = HydraVariant();
+
+testWidgets('adapts the navigation', variant: breakpoints, (tester) async {
+  await tester.pumpWidget(const MyApp());
+  // breakpoints.currentValue is the breakpoint of this run.
+});
+```
+
 ## How It Works
 
 1. **Breakpoint detection** - determines the current breakpoint from screen width
