@@ -1,3 +1,7 @@
+# 2.1.0
+
+* New pub.dev description, the `adaptive` topic and screenshots of the example app
+
 # 2.0.1
 
 * `HydraBuilder` runs its builder only when the breakpoint changes, not on every change of the screen size
