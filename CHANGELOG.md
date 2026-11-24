@@ -6,7 +6,6 @@
 * `context.hydra<T>()` without any value throws `HydraNoValueException` as before
 * Added `HydraLayoutScope` to resolve the breakpoint from the available space instead of the screen, like a CSS container query
 * Added `HydraSliverGrid` and `HydraSliverGrid.builder`, the sliver of `HydraGrid` for a `CustomScrollView`
-* `HydraScope.breakpointOf` takes an optional `behaviour`
 * `Breakpoint` compares with `<`, `<=`, `>` and `>=`
 * New pub.dev description, the `adaptive` topic and screenshots of the example app
 

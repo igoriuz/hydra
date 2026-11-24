@@ -49,23 +49,8 @@ class HydraScope extends StatelessWidget {
 
   /// Returns the breakpoint the nearest [HydraScope] or [HydraLayoutScope]
   /// resolved, or `null` when there is no scope.
-  ///
-  /// With a [behaviour], only a [HydraLayoutScope] answers: it resolves its
-  /// available size with that behaviour. Below a [HydraScope] the result is
-  /// `null` then, as the screen size is read from the [MediaQuery].
-  static Breakpoint? breakpointOf(
-    BuildContext context, {
-    HydraBehaviour? behaviour,
-  }) {
-    if (behaviour == null) {
-      return _dataOf(context, _Aspect.breakpoint)?.breakpoint;
-    }
-
-    final size = _dataOf(context, _Aspect.layoutSize)?.layoutSize;
-    if (size == null) return null;
-
-    final resolver = HydraResolver(behaviour: behaviour);
-    return resolver.resolveBreakpoint(resolver.comparableWidth(size));
+  static Breakpoint? breakpointOf(BuildContext context) {
+    return _dataOf(context, _Aspect.breakpoint)?.breakpoint;
   }
 
   static _HydraScopeData? _dataOf(BuildContext context, _Aspect aspect) {
@@ -89,6 +74,22 @@ class HydraScope extends StatelessWidget {
       child: child,
     );
   }
+}
+
+/// Resolves the space of the nearest [HydraLayoutScope] with [behaviour], or
+/// returns `null` when there is none, as a [HydraScope] only knows the
+/// breakpoint of its own behaviour.
+///
+/// Internal to Hydra, used by [Breakpoint.current]; not exported.
+Breakpoint? layoutBreakpointOf(
+  BuildContext context,
+  HydraBehaviour behaviour,
+) {
+  final size = HydraScope._dataOf(context, _Aspect.layoutSize)?.layoutSize;
+  if (size == null) return null;
+
+  final resolver = HydraResolver(behaviour: behaviour);
+  return resolver.resolveBreakpoint(resolver.comparableWidth(size));
 }
 
 /// [HydraLayoutScope] resolves the breakpoint from the space its parent

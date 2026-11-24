@@ -52,7 +52,9 @@ enum Breakpoint {
   /// }
   /// ```
   static Breakpoint current(BuildContext context, {HydraBehaviour? behaviour}) {
-    final scoped = HydraScope.breakpointOf(context, behaviour: behaviour);
+    final scoped = behaviour == null
+        ? HydraScope.breakpointOf(context)
+        : layoutBreakpointOf(context, behaviour);
     if (scoped != null) return scoped;
 
     final resolver = HydraResolver.of(context, behaviour: behaviour);
