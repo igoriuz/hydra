@@ -1,13 +1,11 @@
 # Hydra handoff
 
-State as of 2026-11-24. `main` is pushed; 2.1.0 and hydra_test 0.1.0 are built but **not published**.
+State as of 2026-11-24. hydra 2.1.0 (tag `v2.1.0`, via the publish workflow) and hydra_test 0.1.0 (first version, published by hand) are **published** on pub.dev.
 
 ## Open points
 
-**Igor decides**
-- Publish hydra 2.1.0: push tag `v2.1.0` (the publish workflow runs on it). Igor agreed on 2026-11-24; held back until the hydra_test question below is settled.
-- Publish hydra_test 0.1.0: the first version of a new package must be published by hand (`cd hydra_test && flutter pub publish`). Afterwards enable automated publishing on pub.dev for tag pattern `hydra_test-v{{version}}`, so later tags `hydra_test-vX.Y.Z` publish via `.github/workflows/publish_hydra_test.yml`.
-- Whether hydra_test stays a separate package at all (alternative: drop it and show a copy-paste helper in the README). Decide before tagging `v2.1.0`, as the 2.1.0 README links to hydra_test.
+**Needs Igor's accounts**
+- pub.dev, package hydra_test, Admin tab: enable automated publishing from GitHub Actions for repository `igoriuz/hydra` with tag pattern `hydra_test-v{{version}}`. Until then a tag `hydra_test-vX.Y.Z` fails in `.github/workflows/publish_hydra_test.yml`; publishing by hand (`cd hydra_test && flutter pub publish`) works, as this Mac now has pub credentials.
 
 **Later on purpose**
 - 3.0.0: remove the deprecated `HydraHead`, `HydraWidget.widgets`, `comparableWidth`, `nearestWidget` and `HydraNoWidgetException`; rewrite the fallback tests in `test/hydra_test.dart` that use `nearestWidget` against `HydraResolver`.
