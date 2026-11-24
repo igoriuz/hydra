@@ -27,6 +27,19 @@ Future<Breakpoint> _current(
 }
 
 void main() {
+  group('comparison', () {
+    test('orders the breakpoints from mini to large', () {
+      expect(Breakpoint.mini < Breakpoint.small, isTrue);
+      expect(Breakpoint.small < Breakpoint.small, isFalse);
+      expect(Breakpoint.small <= Breakpoint.small, isTrue);
+      expect(Breakpoint.medium <= Breakpoint.small, isFalse);
+      expect(Breakpoint.large > Breakpoint.medium, isTrue);
+      expect(Breakpoint.medium > Breakpoint.medium, isFalse);
+      expect(Breakpoint.medium >= Breakpoint.medium, isTrue);
+      expect(Breakpoint.mini >= Breakpoint.small, isFalse);
+    });
+  });
+
   group('Breakpoint.current', () {
     testWidgets('resolves every breakpoint with the default behaviour', (
       tester,
