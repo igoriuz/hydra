@@ -5,15 +5,11 @@ import 'package:hydra/src/hydra_scope.dart';
 
 /// [Breakpoint] is used to distinguish between several device types.
 ///
-/// Comparison between [Breakpoint]s is handled to the getter method `index`.
-/// This means:
-/// - mini = 0,
-/// - small = 1,
-/// - medium = 2,
-/// - large = 3;
+/// Breakpoints are ordered from [Breakpoint.mini] to [Breakpoint.large]
+/// and compare with `<`, `<=`, `>` and `>=`:
 ///
 /// ```dart
-/// Breakpoint.mini.index < Breakpoint.medium.index; // mini = 0, medium = 2
+/// Breakpoint.mini < Breakpoint.medium; // true
 /// ```
 enum Breakpoint {
   /// Smallest available breakpoint. By default everything what is smaller than
@@ -29,6 +25,18 @@ enum Breakpoint {
   /// Biggest available breakpoint.
   large;
 
+  /// Whether this breakpoint is smaller than [other].
+  bool operator <(Breakpoint other) => index < other.index;
+
+  /// Whether this breakpoint is smaller than or the same as [other].
+  bool operator <=(Breakpoint other) => index <= other.index;
+
+  /// Whether this breakpoint is bigger than [other].
+  bool operator >(Breakpoint other) => index > other.index;
+
+  /// Whether this breakpoint is bigger than or the same as [other].
+  bool operator >=(Breakpoint other) => index >= other.index;
+
   /// Returns the [Breakpoint] that is active for the screen of [context].
   ///
   /// Without a [behaviour], the one of the nearest [HydraScope] is used.
@@ -36,7 +44,7 @@ enum Breakpoint {
   /// when the breakpoint changes, if a [HydraScope] resolved it.
   ///
   /// ```dart
-  /// if (Breakpoint.current(context).index >= Breakpoint.medium.index) {
+  /// if (Breakpoint.current(context) >= Breakpoint.medium) {
   ///   showSideNavigation();
   /// }
   /// ```

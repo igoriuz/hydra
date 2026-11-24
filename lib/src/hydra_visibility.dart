@@ -74,9 +74,9 @@ class HydraVisibility extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final current = Breakpoint.current(context, behaviour: behaviour).index;
-    final from = visibleFrom?.index ?? Breakpoint.values.first.index;
-    final until = visibleUntil?.index ?? Breakpoint.values.last.index;
+    final current = Breakpoint.current(context, behaviour: behaviour);
+    final from = visibleFrom ?? Breakpoint.values.first;
+    final until = visibleUntil ?? Breakpoint.values.last;
 
     final visible = from <= current && current <= until;
     if (maintainState) {

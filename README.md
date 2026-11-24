@@ -144,10 +144,12 @@ Outside of a builder, ask for it directly:
 ```dart
 final breakpoint = Breakpoint.current(context);
 
-if (breakpoint.index >= Breakpoint.medium.index) {
+if (breakpoint >= Breakpoint.medium) {
   showSideNavigation();
 }
 ```
+
+Breakpoints are ordered from `mini` to `large` and compare with `<`, `<=`, `>` and `>=`.
 
 ## Visibility
 
