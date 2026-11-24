@@ -43,16 +43,17 @@ enum Breakpoint {
   /// The calling widget rebuilds when the screen size changes - or only
   /// when the breakpoint changes, if a [HydraScope] resolved it.
   ///
+  /// Below a [HydraLayoutScope] the breakpoint follows the space of that
+  /// scope instead of the screen, with or without a [behaviour].
+  ///
   /// ```dart
   /// if (Breakpoint.current(context) >= Breakpoint.medium) {
   ///   showSideNavigation();
   /// }
   /// ```
   static Breakpoint current(BuildContext context, {HydraBehaviour? behaviour}) {
-    if (behaviour == null) {
-      final scoped = HydraScope.breakpointOf(context);
-      if (scoped != null) return scoped;
-    }
+    final scoped = HydraScope.breakpointOf(context, behaviour: behaviour);
+    if (scoped != null) return scoped;
 
     final resolver = HydraResolver.of(context, behaviour: behaviour);
     return resolver.resolveBreakpoint(resolver.widthOf(context));
