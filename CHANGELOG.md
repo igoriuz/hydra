@@ -2,6 +2,7 @@
 
 * `HydraWidget` and `HydraValue` have `const` constructors. Without any alternative they now fail an assertion in debug builds instead of throwing `HydraNoWidgetException` / `HydraNoValueException` from the constructor; in release builds resolving throws `HydraNoValueException`
 * `HydraNoWidgetException` is deprecated, as nothing throws it anymore
+* Deprecated `HydraHead`, `HydraWidget.widgets`, `HydraWidget.comparableWidth` and `HydraWidget.nearestWidget`: they ignore `HydraScope` and `HydraLayoutScope`. Use `Breakpoint.current`, `HydraResolver` or the `mini` … `large` fields instead; all of them will be removed in 3.0.0
 * `context.hydra<T>()` without any value throws `HydraNoValueException` as before
 * Added `HydraLayoutScope` to resolve the breakpoint from the available space instead of the screen, like a CSS container query
 * Added `HydraSliverGrid` and `HydraSliverGrid.builder`, the sliver of `HydraGrid` for a `CustomScrollView`
