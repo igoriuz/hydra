@@ -5,10 +5,10 @@ import 'package:hydra/hydra.dart';
 void main() {
   group('HydraWidget.widgets', () {
     test('lists the biggest breakpoint first by default', () {
-      final hydra = HydraWidget(
-        mini: const SizedBox(),
-        medium: const SizedBox(),
-        large: const SizedBox(),
+      const hydra = HydraWidget(
+        mini: SizedBox(),
+        medium: SizedBox(),
+        large: SizedBox(),
       );
 
       expect(
@@ -18,11 +18,11 @@ void main() {
     });
 
     test('lists the smallest breakpoint first when smaller is preferred', () {
-      final hydra = HydraWidget(
-        behaviour: const HydraBehaviour.preferSmaller(),
-        mini: const SizedBox(),
-        small: const SizedBox(),
-        large: const SizedBox(),
+      const hydra = HydraWidget(
+        behaviour: HydraBehaviour.preferSmaller(),
+        mini: SizedBox(),
+        small: SizedBox(),
+        large: SizedBox(),
       );
 
       expect(

@@ -2,9 +2,33 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_context.dart';
+import 'package:hydra/src/hydra_no_value_exception.dart';
 
 void main() {
   group('HydraContext', () {
+    testWidgets('throws HydraNoValueException without any value', (
+      tester,
+    ) async {
+      late Object error;
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(size: Size(300, 700)),
+          child: Builder(
+            builder: (context) {
+              try {
+                context.hydra<String>();
+              } on Object catch (e) {
+                error = e;
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(error, isA<HydraNoValueException>());
+    });
+
     testWidgets('resolves value at mini breakpoint', (tester) async {
       await tester.pumpWidget(
         MediaQuery(
