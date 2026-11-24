@@ -1,5 +1,8 @@
 # 2.1.0
 
+* `HydraWidget` and `HydraValue` have `const` constructors. Without any alternative they now fail an assertion in debug builds instead of throwing `HydraNoWidgetException` / `HydraNoValueException` from the constructor; in release builds resolving throws `HydraNoValueException`
+* `HydraNoWidgetException` is deprecated, as nothing throws it anymore
+* `context.hydra<T>()` without any value throws `HydraNoValueException` as before
 * New pub.dev description, the `adaptive` topic and screenshots of the example app
 
 # 2.0.1

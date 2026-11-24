@@ -278,13 +278,13 @@ void main() {
         tester,
       ) async {
         await tester.pumpWidget(
-          MediaQuery(
-            data: const MediaQueryData(size: Size(1400, 900)),
+          const MediaQuery(
+            data: MediaQueryData(size: Size(1400, 900)),
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: HydraWidget(
-                mini: const Text('mini'),
-                large: const Text('large'),
+                mini: Text('mini'),
+                large: Text('large'),
               ),
             ),
           ),

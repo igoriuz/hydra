@@ -18,17 +18,16 @@ class HydraValue<T> {
   /// Creates a [HydraValue] with the given breakpoint values.
   ///
   /// At least one value must be provided.
-  HydraValue({
+  const HydraValue({
     this.mini,
     this.small,
     this.medium,
     this.large,
     this.behaviour,
-  }) {
-    if (mini == null && small == null && medium == null && large == null) {
-      throw const HydraNoValueException('At least one value is needed');
-    }
-  }
+  }) : assert(
+          mini != null || small != null || medium != null || large != null,
+          'At least one value is needed',
+        );
 
   /// Value for the mini breakpoint.
   final T? mini;
@@ -48,6 +47,9 @@ class HydraValue<T> {
   final HydraBehaviour? behaviour;
 
   /// Resolves the value for the current screen size.
+  ///
+  /// Throws a [HydraNoValueException] when no value is given; in debug
+  /// builds the constructor already fails an assertion.
   T resolve(BuildContext context) {
     final resolver = HydraResolver.of(context, behaviour: behaviour);
     return resolver.resolveValueAt<T>(

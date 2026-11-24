@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:hydra/src/breakpoint.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
 import 'package:hydra/src/hydra_head.dart';
-import 'package:hydra/src/hydra_no_widget_exception.dart';
 import 'package:hydra/src/hydra_resolver.dart';
 import 'package:hydra/src/hydra_scope.dart';
 import 'package:hydra/src/hydra_transition.dart';
@@ -16,7 +15,7 @@ class HydraWidget extends StatelessWidget {
   /// Creates a [HydraWidget] with the given screen alternatives.
   ///
   /// At least one of [mini], [small], [medium], or [large] must be provided.
-  HydraWidget({
+  const HydraWidget({
     super.key,
     this.behaviour,
     this.transition,
@@ -24,11 +23,10 @@ class HydraWidget extends StatelessWidget {
     this.small,
     this.medium,
     this.large,
-  }) {
-    if (mini == null && small == null && medium == null && large == null) {
-      throw const HydraNoWidgetException('At least one widget is needed');
-    }
-  }
+  }) : assert(
+          mini != null || small != null || medium != null || large != null,
+          'At least one widget is needed',
+        );
 
   /// {@macro hydra_behaviour}
   ///

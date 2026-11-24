@@ -1,20 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydra/src/hydra_behaviour.dart';
-import 'package:hydra/src/hydra_no_value_exception.dart';
 import 'package:hydra/src/hydra_value.dart';
 
 void main() {
   group('HydraValue', () {
-    test('throws HydraNoValueException when no values provided', () {
+    test('fails an assertion when no values provided', () {
       expect(
         HydraValue<double>.new,
-        throwsA(isA<HydraNoValueException>()),
+        throwsA(isA<AssertionError>()),
       );
     });
 
+    test('can be const', () {
+      const value = HydraValue<double>(mini: 8);
+      expect(identical(value, const HydraValue<double>(mini: 8)), isTrue);
+    });
+
     testWidgets('resolves exact match at mini breakpoint', (tester) async {
-      final value = HydraValue<String>(
+      const value = HydraValue<String>(
         mini: 'a',
         small: 'b',
         medium: 'c',
@@ -37,7 +41,7 @@ void main() {
     });
 
     testWidgets('resolves exact match at large breakpoint', (tester) async {
-      final value = HydraValue<String>(
+      const value = HydraValue<String>(
         mini: 'a',
         small: 'b',
         medium: 'c',
@@ -60,7 +64,7 @@ void main() {
     });
 
     testWidgets('falls back to nearest value', (tester) async {
-      final value = HydraValue<String>(mini: 'a');
+      const value = HydraValue<String>(mini: 'a');
 
       await tester.pumpWidget(
         MediaQuery(
@@ -78,10 +82,10 @@ void main() {
     });
 
     testWidgets('respects custom behaviour', (tester) async {
-      final value = HydraValue<String>(
+      const value = HydraValue<String>(
         small: 's',
         large: 'l',
-        behaviour: const HydraBehaviour.preferSmaller(),
+        behaviour: HydraBehaviour.preferSmaller(),
       );
 
       await tester.pumpWidget(
@@ -101,7 +105,7 @@ void main() {
     });
 
     testWidgets('works with non-String types', (tester) async {
-      final value = HydraValue<double>(mini: 8, large: 32);
+      const value = HydraValue<double>(mini: 8, large: 32);
 
       await tester.pumpWidget(
         MediaQuery(

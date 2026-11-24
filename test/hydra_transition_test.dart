@@ -106,32 +106,32 @@ void main() {
       const transition = HydraTransition.fade(alignment: Alignment.centerLeft);
 
       await tester.pumpWidget(
-        MediaQuery(
-          data: const MediaQueryData(size: Size(300, 800)),
+        const MediaQuery(
+          data: MediaQueryData(size: Size(300, 800)),
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: Align(
               alignment: Alignment.topLeft,
               child: HydraWidget(
                 transition: transition,
-                mini: const SizedBox(key: Key('narrow'), width: 80, height: 50),
-                large: const SizedBox(key: Key('wide'), width: 200, height: 50),
+                mini: SizedBox(key: Key('narrow'), width: 80, height: 50),
+                large: SizedBox(key: Key('wide'), width: 200, height: 50),
               ),
             ),
           ),
         ),
       );
       await tester.pumpWidget(
-        MediaQuery(
-          data: const MediaQueryData(size: Size(1400, 800)),
+        const MediaQuery(
+          data: MediaQueryData(size: Size(1400, 800)),
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: Align(
               alignment: Alignment.topLeft,
               child: HydraWidget(
                 transition: transition,
-                mini: const SizedBox(key: Key('narrow'), width: 80, height: 50),
-                large: const SizedBox(key: Key('wide'), width: 200, height: 50),
+                mini: SizedBox(key: Key('narrow'), width: 80, height: 50),
+                large: SizedBox(key: Key('wide'), width: 200, height: 50),
               ),
             ),
           ),

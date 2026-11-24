@@ -40,7 +40,7 @@ void main() {
     testWidgets('HydraWidget uses the scoped behaviour', (tester) async {
       await tester.pumpWidget(
         _host(
-          HydraWidget(mini: const Text('mini'), small: const Text('small')),
+          const HydraWidget(mini: Text('mini'), small: Text('small')),
           scope: _scoped,
         ),
       );
@@ -51,7 +51,7 @@ void main() {
     testWidgets('HydraWidget falls back per scoped preference', (tester) async {
       await tester.pumpWidget(
         _host(
-          HydraWidget(mini: const Text('mini'), medium: const Text('medium')),
+          const HydraWidget(mini: Text('mini'), medium: Text('medium')),
           scope: const HydraBehaviour.preferSmaller(),
         ),
       );
@@ -62,10 +62,10 @@ void main() {
     testWidgets('local behaviour overrides the scoped one', (tester) async {
       await tester.pumpWidget(
         _host(
-          HydraWidget(
-            behaviour: const HydraBehaviour(),
-            mini: const Text('mini'),
-            small: const Text('small'),
+          const HydraWidget(
+            behaviour: HydraBehaviour(),
+            mini: Text('mini'),
+            small: Text('small'),
           ),
           scope: _scoped,
         ),
@@ -81,7 +81,7 @@ void main() {
         _host(
           Builder(
             builder: (context) {
-              final value = HydraValue<String>(mini: 'a', small: 'b');
+              const value = HydraValue<String>(mini: 'a', small: 'b');
               final inline = context.hydra<String>(mini: 'c', small: 'd');
               return Text('${value.resolve(context)}$inline');
             },
@@ -96,9 +96,9 @@ void main() {
     testWidgets('rebuilds dependents when the behaviour changes', (
       tester,
     ) async {
-      final widget = HydraWidget(
-        mini: const Text('mini'),
-        small: const Text('small'),
+      const widget = HydraWidget(
+        mini: Text('mini'),
+        small: Text('small'),
       );
 
       await tester.pumpWidget(_host(widget, scope: _scoped));
@@ -201,9 +201,9 @@ void main() {
 
     testWidgets('resolves the breakpoint where the scope is', (tester) async {
       Widget tree({required bool innerScope}) {
-        final widget = HydraWidget(
-          mini: const Text('mini'),
-          large: const Text('large'),
+        const widget = HydraWidget(
+          mini: Text('mini'),
+          large: Text('large'),
         );
         return MediaQuery(
           data: const MediaQueryData(size: Size(1400, 800)),
@@ -214,8 +214,8 @@ void main() {
               child: Directionality(
                 textDirection: TextDirection.ltr,
                 child: innerScope
-                    ? HydraScope(
-                        behaviour: const HydraBehaviour(),
+                    ? const HydraScope(
+                        behaviour: HydraBehaviour(),
                         child: widget,
                       )
                     : widget,

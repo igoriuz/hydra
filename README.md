@@ -59,10 +59,10 @@ import 'package:hydra/hydra.dart';
 Use `HydraWidget` to display different widgets based on the current breakpoint:
 
 ```dart
-HydraWidget(
-  mini: const PhoneLayout(),
-  medium: const TabletLayout(),
-  large: const DesktopLayout(),
+const HydraWidget(
+  mini: PhoneLayout(),
+  medium: TabletLayout(),
+  large: DesktopLayout(),
 )
 ```
 
@@ -73,10 +73,10 @@ Hydra selects the best match for the current screen width. If no exact match exi
 By default the widgets are swapped instantly. Pass a `transition` to animate the change:
 
 ```dart
-HydraWidget(
-  transition: const HydraTransition.fade(),
-  mini: const PhoneLayout(),
-  large: const DesktopLayout(),
+const HydraWidget(
+  transition: HydraTransition.fade(),
+  mini: PhoneLayout(),
+  large: DesktopLayout(),
 )
 ```
 
@@ -111,7 +111,7 @@ Widget build(BuildContext context) {
 Or keep the value around as a `HydraValue<T>` and resolve it later:
 
 ```dart
-final padding = HydraValue<double>(mini: 8, small: 16, large: 32);
+const padding = HydraValue<double>(mini: 8, small: 16, large: 32);
 
 @override
 Widget build(BuildContext context) {
